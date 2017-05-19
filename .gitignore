@@ -40,5 +40,5 @@ android/proguard/
 build/
 .gradle
 
-JMessage-example/build
-JMessage-example/gradle/wrapper
+JMessage-example/Android/build
+JMessage-example/Android/gradle/wrapper
