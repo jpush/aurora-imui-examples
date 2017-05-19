@@ -1,0 +1,19 @@
+<resources>
+    <!--Chatting Widget-->
+    <string name="app_name">JMessageUISample</string>
+    <string name="chat_title">0002</string>
+    <string name="chat_input_hint">Send message</string>
+    <string name="message_click_hint">Message click event</string>
+    <string name="message_long_click_hint">Message long press event</string>
+    <string name="avatar_click_hint">Avatar click event</string>
+    <string name="toast_username_null">username is null</string>
+    <string name="toast_password_null">password is null</string>
+
+    <!--Login Widget-->
+    <string name="hint_input_username">input username</string>
+    <string name="hint_input_password">input password</string>
+    <string name="login_btn_login">Login</string>
+    <string name="login_register">Register</string>
+    <string name="dialog_logging_in">Logging in</string>
+
+</resources>

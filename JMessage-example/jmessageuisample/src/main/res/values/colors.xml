@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="grey">#808080</color>
+
+    <color name="bg_title_bar">#3f80dc</color>
+    <color name="default_cursor_color">#8db4eb</color>
+    <color name="login_btn_sel_color">#006400</color>
+    <color name="login_register_text_color">#555555</color>
+</resources>
