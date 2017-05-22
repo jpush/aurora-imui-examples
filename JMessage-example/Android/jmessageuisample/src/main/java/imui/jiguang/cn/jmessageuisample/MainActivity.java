@@ -399,6 +399,21 @@ public class MainActivity extends Activity implements ChatView.OnKeyboardChanged
     private void initMsgAdapter() {
         ImageLoader imageLoader = new ImageLoader() {
             @Override
+            public void loadAvatarImage(ImageView avatarImageView, String string) {
+                if (string.contains("R.drawable")) {
+                    Integer resId = getResources().getIdentifier(string.replace("R.drawable.", ""),
+                            "drawable", getPackageName());
+
+                    avatarImageView.setImageResource(resId);
+                } else {
+                    Glide.with(getApplicationContext())
+                            .load(string)
+                            .placeholder(R.drawable.aurora_headicon_default)
+                            .into(avatarImageView);
+                }
+            }
+
+            @Override
             public void loadImage(ImageView imageView, String url) {
                 Glide.with(mContext).load(url).into(imageView);
             }
