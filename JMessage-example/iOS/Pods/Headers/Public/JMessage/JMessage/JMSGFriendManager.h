@@ -1,0 +1,1 @@
+../../../../JMessage/JMessage.framework/Headers/JMSGFriendManager.h

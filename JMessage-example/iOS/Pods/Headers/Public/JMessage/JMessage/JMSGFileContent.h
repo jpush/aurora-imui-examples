@@ -1,0 +1,1 @@
+../../../../JMessage/JMessage.framework/Headers/JMSGFileContent.h
