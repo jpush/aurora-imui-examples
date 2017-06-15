@@ -79,15 +79,15 @@
 		622C301A1EEFBC5A005886EF /* JMTextBubbleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 622C30191EEFBC5A005886EF /* JMTextBubbleContentView.m */; };
 		622C30241EEFBC6C005886EF /* ConversationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 622C301C1EEFBC6C005886EF /* ConversationViewController.m */; };
 		622C30251EEFBC6C005886EF /* ConversationViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 622C301D1EEFBC6C005886EF /* ConversationViewController.xib */; };
-		622C30261EEFBC6C005886EF /* MessageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 622C301F1EEFBC6C005886EF /* MessageLayout.m */; };
-		622C30271EEFBC6C005886EF /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 622C30211EEFBC6C005886EF /* MessageModel.m */; };
-		622C30281EEFBC6C005886EF /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 622C30231EEFBC6C005886EF /* UserModel.m */; };
 		622C302F1EEFC083005886EF /* inComing_bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 622C30291EEFC083005886EF /* inComing_bubble.png */; };
 		622C30301EEFC083005886EF /* inComing_bubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622C302A1EEFC083005886EF /* inComing_bubble@2x.png */; };
 		622C30311EEFC083005886EF /* inComing_bubble@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622C302B1EEFC083005886EF /* inComing_bubble@3x.png */; };
 		622C30321EEFC083005886EF /* outGoing_bubble.png in Resources */ = {isa = PBXBuildFile; fileRef = 622C302C1EEFC083005886EF /* outGoing_bubble.png */; };
 		622C30331EEFC083005886EF /* outGoing_bubble@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622C302D1EEFC083005886EF /* outGoing_bubble@2x.png */; };
 		622C30341EEFC083005886EF /* outGoing_bubble@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 622C302E1EEFC083005886EF /* outGoing_bubble@3x.png */; };
+		625538871EF26ABE00F6A239 /* MessageLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 625538821EF26ABE00F6A239 /* MessageLayout.m */; };
+		625538881EF26ABE00F6A239 /* MessageModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 625538841EF26ABE00F6A239 /* MessageModel.m */; };
+		625538891EF26ABE00F6A239 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 625538861EF26ABE00F6A239 /* UserModel.m */; };
 		62A5C3B31EF0E0FB005F28AB /* JMImageBubbleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A5C3B21EF0E0FB005F28AB /* JMImageBubbleContentView.m */; };
 		62A5C3B61EF0FC48005F28AB /* JMVoiceBubbleContentView.m in Sources */ = {isa = PBXBuildFile; fileRef = 62A5C3B51EF0FC48005F28AB /* JMVoiceBubbleContentView.m */; };
 		62A5C3ED1EF10A0D005F28AB /* incoming_voice_1.png in Resources */ = {isa = PBXBuildFile; fileRef = 62A5C3DB1EF10A0D005F28AB /* incoming_voice_1.png */; };
@@ -189,18 +189,18 @@
 		622C301B1EEFBC6C005886EF /* ConversationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ConversationViewController.h; sourceTree = "<group>"; };
 		622C301C1EEFBC6C005886EF /* ConversationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ConversationViewController.m; sourceTree = "<group>"; };
 		622C301D1EEFBC6C005886EF /* ConversationViewController.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = ConversationViewController.xib; sourceTree = "<group>"; };
-		622C301E1EEFBC6C005886EF /* MessageLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageLayout.h; sourceTree = "<group>"; };
-		622C301F1EEFBC6C005886EF /* MessageLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLayout.m; sourceTree = "<group>"; };
-		622C30201EEFBC6C005886EF /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
-		622C30211EEFBC6C005886EF /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
-		622C30221EEFBC6C005886EF /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
-		622C30231EEFBC6C005886EF /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		622C30291EEFC083005886EF /* inComing_bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = inComing_bubble.png; sourceTree = "<group>"; };
 		622C302A1EEFC083005886EF /* inComing_bubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inComing_bubble@2x.png"; sourceTree = "<group>"; };
 		622C302B1EEFC083005886EF /* inComing_bubble@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "inComing_bubble@3x.png"; sourceTree = "<group>"; };
 		622C302C1EEFC083005886EF /* outGoing_bubble.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = outGoing_bubble.png; sourceTree = "<group>"; };
 		622C302D1EEFC083005886EF /* outGoing_bubble@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "outGoing_bubble@2x.png"; sourceTree = "<group>"; };
 		622C302E1EEFC083005886EF /* outGoing_bubble@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "outGoing_bubble@3x.png"; sourceTree = "<group>"; };
+		625538811EF26ABE00F6A239 /* MessageLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageLayout.h; sourceTree = "<group>"; };
+		625538821EF26ABE00F6A239 /* MessageLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageLayout.m; sourceTree = "<group>"; };
+		625538831EF26ABE00F6A239 /* MessageModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MessageModel.h; sourceTree = "<group>"; };
+		625538841EF26ABE00F6A239 /* MessageModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MessageModel.m; sourceTree = "<group>"; };
+		625538851EF26ABE00F6A239 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		625538861EF26ABE00F6A239 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		62A5C3B11EF0E0FB005F28AB /* JMImageBubbleContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMImageBubbleContentView.h; sourceTree = "<group>"; };
 		62A5C3B21EF0E0FB005F28AB /* JMImageBubbleContentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = JMImageBubbleContentView.m; sourceTree = "<group>"; };
 		62A5C3B41EF0FC48005F28AB /* JMVoiceBubbleContentView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JMVoiceBubbleContentView.h; sourceTree = "<group>"; };
@@ -281,12 +281,6 @@
 				622C301B1EEFBC6C005886EF /* ConversationViewController.h */,
 				622C301C1EEFBC6C005886EF /* ConversationViewController.m */,
 				622C301D1EEFBC6C005886EF /* ConversationViewController.xib */,
-				622C301E1EEFBC6C005886EF /* MessageLayout.h */,
-				622C301F1EEFBC6C005886EF /* MessageLayout.m */,
-				622C30201EEFBC6C005886EF /* MessageModel.h */,
-				622C30211EEFBC6C005886EF /* MessageModel.m */,
-				622C30221EEFBC6C005886EF /* UserModel.h */,
-				622C30231EEFBC6C005886EF /* UserModel.m */,
 				622C2F641EEFB616005886EF /* Main.storyboard */,
 				622C2F671EEFB616005886EF /* Assets.xcassets */,
 				622C2F691EEFB616005886EF /* LaunchScreen.storyboard */,
@@ -534,17 +528,10 @@
 		622C30151EEFBC5A005886EF /* JMessageBridge */ = {
 			isa = PBXGroup;
 			children = (
-				622C30161EEFBC5A005886EF /* Models */,
+				625538801EF26ABE00F6A239 /* Models */,
 				622C30171EEFBC5A005886EF /* Views */,
 			);
 			path = JMessageBridge;
-			sourceTree = "<group>";
-		};
-		622C30161EEFBC5A005886EF /* Models */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Models;
 			sourceTree = "<group>";
 		};
 		622C30171EEFBC5A005886EF /* Views */ = {
@@ -558,6 +545,19 @@
 				62A5C3B51EF0FC48005F28AB /* JMVoiceBubbleContentView.m */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		625538801EF26ABE00F6A239 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				625538811EF26ABE00F6A239 /* MessageLayout.h */,
+				625538821EF26ABE00F6A239 /* MessageLayout.m */,
+				625538831EF26ABE00F6A239 /* MessageModel.h */,
+				625538841EF26ABE00F6A239 /* MessageModel.m */,
+				625538851EF26ABE00F6A239 /* UserModel.h */,
+				625538861EF26ABE00F6A239 /* UserModel.m */,
+			);
+			path = Models;
 			sourceTree = "<group>";
 		};
 		77E916E6CCCE7B954DCC149B /* Pods */ = {
@@ -733,7 +733,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				622C2FBC1EEFB678005886EF /* CGRectExtension.swift in Sources */,
-				622C30261EEFBC6C005886EF /* MessageLayout.m in Sources */,
+				625538871EF26ABE00F6A239 /* MessageLayout.m in Sources */,
 				622C2FEF1EEFB678005886EF /* IMUITextView.swift in Sources */,
 				622C2FBF1EEFB678005886EF /* DateExtension.swift in Sources */,
 				622C2FCA1EEFB678005886EF /* IMUIInputViewDelegate.swift in Sources */,
@@ -767,9 +767,9 @@
 				622C2FD81EEFB678005886EF /* IMUIChatLayout.swift in Sources */,
 				622C2FC91EEFB678005886EF /* BundleInputViewExtension.swift in Sources */,
 				622C2FBE1EEFB678005886EF /* CMSampleBufferExtension.swift in Sources */,
+				625538891EF26ABE00F6A239 /* UserModel.m in Sources */,
 				622C2FDD1EEFB678005886EF /* IMUIMessageModel.swift in Sources */,
 				622C2FC11EEFB678005886EF /* UIColorExtension.swift in Sources */,
-				622C30281EEFBC6C005886EF /* UserModel.m in Sources */,
 				622C2F5D1EEFB616005886EF /* main.m in Sources */,
 				622C2FD31EEFB678005886EF /* IMUIProgressButton.swift in Sources */,
 				622C2FD71EEFB678005886EF /* IMUIChatDataManager.swift in Sources */,
@@ -782,13 +782,13 @@
 				622C2FF01EEFB678005886EF /* IMUIVideoMessageContentView.swift in Sources */,
 				622C2FD21EEFB678005886EF /* IMUIPhotoCaptureDelegate.swift in Sources */,
 				622C2FBD1EEFB678005886EF /* CIImageExtension.swift in Sources */,
-				622C30271EEFBC6C005886EF /* MessageModel.m in Sources */,
 				622C2FE51EEFB678005886EF /* IMUIMessageStatusViewProtocal.swift in Sources */,
 				622C301A1EEFBC5A005886EF /* JMTextBubbleContentView.m in Sources */,
 				622C2FD91EEFB678005886EF /* IMUIVideoFileLoader.swift in Sources */,
 				622C30241EEFBC6C005886EF /* ConversationViewController.m in Sources */,
 				622C2FE81EEFB678005886EF /* IMUIBaseMessageCell.swift in Sources */,
 				622C2FDC1EEFB678005886EF /* IMUIMessageCellLayout.swift in Sources */,
+				625538881EF26ABE00F6A239 /* MessageModel.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

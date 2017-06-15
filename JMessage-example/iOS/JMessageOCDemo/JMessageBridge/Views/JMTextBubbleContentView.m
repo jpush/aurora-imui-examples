@@ -22,6 +22,7 @@
   self = [super initWithFrame:frame];
   if (self) {
     _textMessageLabel = [UILabel new];
+    _textMessageLabel.numberOfLines = 0;
     [self addSubview:_textMessageLabel];
   }
   return self;
