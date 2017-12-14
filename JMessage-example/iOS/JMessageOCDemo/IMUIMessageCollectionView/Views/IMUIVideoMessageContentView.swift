@@ -70,6 +70,7 @@ public class IMUIVideoMessageContentView: UIView, IMUIMessageContentViewProtocol
         }
       } catch {
         DispatchQueue.main.async {
+          print("\(error)")
           self.videoView.image = nil
         }
       }

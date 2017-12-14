@@ -30,7 +30,6 @@ class IMUICameraPreviewView: UIView {
   
   override var frame: CGRect {
     didSet {
-      
       let videoLayer = self.layer as! AVCaptureVideoPreviewLayer
       videoLayer.videoGravity = AVLayerVideoGravity.resizeAspectFill;
     }

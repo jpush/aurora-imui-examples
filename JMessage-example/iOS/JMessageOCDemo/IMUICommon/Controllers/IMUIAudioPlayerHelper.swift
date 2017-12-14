@@ -15,7 +15,7 @@ public protocol IMUIAudioPlayerDelegate:NSObjectProtocol {
   func didAudioPlayerPausePlay(_ AudioPlayer:AVAudioPlayer)
 }
 
-public class IMUIAudioPlayerHelper: NSObject {
+@objc public class IMUIAudioPlayerHelper: NSObject {
   
   @objc public static let sharedInstance = IMUIAudioPlayerHelper()
   
@@ -57,7 +57,7 @@ public class IMUIAudioPlayerHelper: NSObject {
     NotificationCenter.default.removeObserver(self)
   }
   
-  open func playAudioWithData(_ identify: String,
+  @objc public func playAudioWithData(_ identify: String,
                               _ voiceData: Data,
                               progressCallback: @escaping ProgressCallback,
                               finishCallBack: @escaping FinishCallback,
@@ -104,13 +104,13 @@ public class IMUIAudioPlayerHelper: NSObject {
     self.playProgressCallback?(self.identify ,player.currentTime, player.duration)
   }
   
-  func pausePlayingAudio() {
+  @objc func pausePlayingAudio() {
     self.player?.pause()
     updater.invalidate()
     
   }
   
-  func resumePlayingAudio() {
+  @objc func resumePlayingAudio() {
     self.player?.play()
     updater.add(to: RunLoop.current, forMode: RunLoopMode.commonModes)
   }
