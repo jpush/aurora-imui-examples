@@ -44,6 +44,9 @@
   return _messagemediaPath;
 }
 
+- (NSString *)setMediaFilePath:(NSString *)path {
+  return _messagemediaPath = path;
+}
 - (void)getMediaDataCallback:(JMAsyncDataHandler) callback {
   switch (_message.contentType) {
     case kJMSGContentTypeText: {
@@ -119,6 +122,7 @@
       }
       case kJMSGContentTypeImage: {
         _type = @"Image";
+        
         _layout = [[MessageLayout alloc] initWithIsOutGoingMessage: _isOutGoing
                                                     isNeedShowTime: false
                                                  bubbleContentSize: CGSizeMake(120, 160)
@@ -137,7 +141,20 @@
                                                        contentType: @"Voice"];
         break;
       }
+      case kJMSGContentTypeFile: {
+        _type = @"Video";
+        JMSGFileContent *content = (JMSGFileContent *)message.content;
+        [content fileData:^(NSData *data, NSString *objectId, NSError *error) {
+          
+        }];
+        _messagemediaPath = content.originMediaLocalPath;
         
+        _layout = [[MessageLayout alloc] initWithIsOutGoingMessage: _isOutGoing
+                                                    isNeedShowTime: false
+                                                 bubbleContentSize: CGSizeMake(120, 160)
+                                               bubbleContentInsets: UIEdgeInsetsZero
+                                                       contentType: @"Video"];
+      }
       default:
         break;
     }

@@ -22,7 +22,7 @@ typedef void (^JMAsyncDataHandler)(NSData *data, NSString *msgId);
 
 @property (nonatomic, readonly, strong) id <IMUIUserProtocol> _Nonnull fromUser;
 
-@property (nonatomic, readonly, strong) id <IMUIMessageCellLayoutProtocal> _Nonnull layout;
+@property (nonatomic, readonly, strong) id <IMUIMessageCellLayoutProtocol> _Nonnull layout;
 
 @property (nonatomic, readonly, strong) UIImage * _Nonnull resizableBubbleImage;
 
@@ -43,6 +43,8 @@ typedef void (^JMAsyncDataHandler)(NSData *data, NSString *msgId);
 - (instancetype _Nullable )initWithMessage:(JMSGMessage *_Nullable)message;
 
 - (void)getMediaDataCallback:(JMAsyncDataHandler) callback;
+
+- (NSString *)setMediaFilePath:(NSString *)path;
 @end
 
 

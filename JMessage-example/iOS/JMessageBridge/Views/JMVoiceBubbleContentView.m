@@ -8,6 +8,7 @@
 #import <UIKit/UIKit.h>
 #import "JMVoiceBubbleContentView.h"
 #import "MessageModel.h"
+#import "JMessageOCDemo-Swift.h"
 
 @interface JMVoiceBubbleContentView ()
 @property(strong, nonatomic)UIImageView *voiceImg;
@@ -46,15 +47,17 @@
   }
 }
 
-
 - (void)onTapVoiceContents {
   if (!_isMediaActivity) {
     [_messageModel getMediaDataCallback:^(NSData *data, NSString *msgId) {
       if ([_messageModel.msgId isEqualToString:msgId]) {
-        [IMUIAudioPlayerHelper.sharedInstance playAudioWithData:data progressCallback:^(NSTimeInterval currendTime, NSTimeInterval duration) {
+        NSObject *obj = IMUIAudioPlayerHelper.sharedInstance;
+        [IMUIAudioPlayerHelper.sharedInstance playAudioWithData:@"" :data progressCallback:^(NSString * _Nonnull identify, NSTimeInterval currentTime, NSTimeInterval duration) {
           
-        } finishCallBack:^{
+        } finishCallBack:^(NSString * _Nonnull identify) {
           _isMediaActivity = NO;
+        } stopCallBack:^(NSString * _Nonnull identify) {
+          
         }];
       }
     }];
