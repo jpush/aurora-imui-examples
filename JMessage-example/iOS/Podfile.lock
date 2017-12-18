@@ -1,0 +1,15 @@
+PODS:
+  - JCore (1.1.6)
+  - JMessage (3.4.0):
+    - JCore (~> 1.1.1)
+
+DEPENDENCIES:
+  - JMessage (~> 3.4.0)
+
+SPEC CHECKSUMS:
+  JCore: 18fc8725124f26e55625eaf224659b3a999dcf63
+  JMessage: 5c0a684b497cdfdc59e2a7871518c643a5814e19
+
+PODFILE CHECKSUM: d595e80566d13266a2e6770beada0875c4b6662e
+
+COCOAPODS: 1.2.1
