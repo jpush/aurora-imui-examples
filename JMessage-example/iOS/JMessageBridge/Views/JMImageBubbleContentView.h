@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 #import "JMessageOCDemo-Swift.h"
 
-@interface JMImageBubbleContentView : UIView <IMUIMessageContentViewProtocal>
+@interface JMImageBubbleContentView : UIView <IMUIMessageContentViewProtocol>
 - (void)layoutContentViewWithMessage:(id <IMUIMessageModelProtocol> _Nonnull)message;
 @end

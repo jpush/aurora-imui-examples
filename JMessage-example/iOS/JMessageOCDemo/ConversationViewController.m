@@ -10,12 +10,15 @@
 //#import <AuroraIMUI/AuroraIMUI-Swift.h>
 #import "JMessageOCDemo-Swift.h"
 #import <Photos/Photos.h>
+#import <AVFoundation/AVFoundation.h>
 #import "MessageModel.h"
+#import <MediaPlayer/MediaPlayer.h>
 
 @interface ConversationViewController() <IMUIInputViewDelegate, IMUIMessageMessageCollectionViewDelegate, JMessageDelegate>
 @property (weak, nonatomic) IBOutlet IMUIMessageCollectionView *messageList;
 @property (weak, nonatomic) IBOutlet IMUIInputView *imuiInputView;
-
+@property (strong, nonatomic) AVPlayer *player;
+@property (strong, nonatomic) AVPlayerLayer *playLayer;
 @end
 
 @implementation ConversationViewController
@@ -31,7 +34,7 @@
     [messageModelArray addObject:messageModel];
   }
   [JMessage addDelegate:self withConversation:_conversation];
-  [_messageList insertMessagesWith:messageModelArray];
+//  [_messageList insertMessagesWith:messageModelArray];
 }
 
 - (void)viewDidLayoutSubviews {
@@ -97,17 +100,18 @@
         
         PHImageRequestOptions *options = [[PHImageRequestOptions alloc]init];
         options.synchronous  = YES;
-        [[PHImageManager defaultManager] requestImageForAsset: asset
-                                                   targetSize: CGSizeMake(100.0, 100.0)
-                                                  contentMode:PHImageContentModeAspectFill
-                                                      options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
-                                                        NSData *imageData = UIImagePNGRepresentation(result);
-                                                        JMSGImageContent *imageContent = [[JMSGImageContent alloc] initWithImageData:imageData];
-                                                        JMSGMessage *message = [_conversation createMessageWithContent:imageContent];
-                                                        MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
-                                                        [_conversation sendMessage:message];
-                                                        [_messageList appendMessageWith:messageModel];
-                                                      }];
+        [[PHImageManager defaultManager]
+               requestImageForAsset: asset
+                         targetSize: CGSizeMake(100.0, 100.0)
+                        contentMode:PHImageContentModeAspectFill
+                            options:options resultHandler:^(UIImage * _Nullable result, NSDictionary * _Nullable info) {
+                              NSData *imageData = UIImagePNGRepresentation(result);
+                              JMSGImageContent *imageContent = [[JMSGImageContent alloc] initWithImageData:imageData];
+                              JMSGMessage *message = [_conversation createMessageWithContent:imageContent];
+                              MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
+                              [_conversation sendMessage:message];
+                              [_messageList appendMessageWith:messageModel];
+                                      }];
         break;
       }
         
@@ -135,7 +139,43 @@
 }
 /// Tells the delegate when user did shoot video in camera mode
 - (void)finishRecordVideoWithVideoPath:(NSString * _Nonnull)videoPath durationTime:(double)durationTime {
+  NSData *data = [NSData dataWithContentsOfFile: videoPath];
+  
+  JMSGFileContent *content = [[JMSGFileContent alloc] initWithFileData:data fileName:@"video"];
+  content.format = @"mp4";
+  JMSGMessage *message = [_conversation createMessageWithContent: content];
+  JMSGFileContent *fileContent = message.content;
+  NSString *path = fileContent.originMediaLocalPath;
+  
+  MessageModel *messageModel = [[MessageModel alloc] initWithMessage: message];
+//  messageModel.mediaFilePath = videoPath;
 
+  
+  [_conversation sendMessage:message];
+  
+  [_messageList appendMessageWith:messageModel];
+
+  //get video image
+//  AVURLAsset *asset = [AVURLAsset URLAssetWithURL:[NSURL fileURLWithPath:messageModel.mediaFilePath] options:nil];
+//  AVAssetImageGenerator *imgGenerator = [AVAssetImageGenerator assetImageGeneratorWithAsset:asset];
+//  NSError *error = nil;
+//  imgGenerator.appliesPreferredTrackTransform = YES;
+//  CGImageRef *cgImg = [imgGenerator copyCGImageAtTime:CMTimeMake(0, 1) actualTime:nil error: &error];
+//  UIImage *img = [UIImage imageWithCGImage:cgImg];
+
+//  BOOL isExist = [NSFileManager.defaultManager fileExistsAtPath:messageModel.mediaFilePath];
+//  NSData *thedata = [NSData dataWithContentsOfURL:[NSURL fileURLWithPath:messageModel.mediaFilePath]];
+//
+//  NSError *error = nil;
+//  NSString *copyPath = [NSString stringWithFormat:@"%@.mp4",messageModel.mediaFilePath];
+//  [NSFileManager.defaultManager copyItemAtPath:messageModel.mediaFilePath toPath:copyPath error:&error];
+//  MPMoviePlayerViewController *vc = [[MPMoviePlayerViewController alloc] initWithContentURL:[NSURL fileURLWithPath:copyPath]];
+//  [[MPMoviePlayerController alloc] ]
+//  [self presentViewController:vc animated:true completion:^{
+//      [vc.moviePlayer play];
+//  }];
+  
+  
 }
 
 - (void)keyBoardWillShowWithHeight:(CGFloat)height durationTime:(double)durationTime {
@@ -158,8 +198,8 @@
 - (void)onSendMessageResponse:(JMSGMessage *)message
                         error:(NSError *)error {
   if (error == nil) {
-    MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
-    [_messageList updateMessageWith:messageModel];
+//    MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
+//    [_messageList updateMessageWith:messageModel];
   }
 }
 

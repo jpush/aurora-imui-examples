@@ -12,6 +12,7 @@
 #import "JMTextBubbleContentView.h"
 #import "JMImageBubbleContentView.h"
 #import "JMVoiceBubbleContentView.h"
+#import "JMVideoBubbleContentView.h"
 
 @interface MessageLayout()
 @property(strong, nonatomic)IMUIMessageCellLayout *layout;
@@ -72,7 +73,7 @@
   return _layout.cellContentInset;
 }
 
-- (id <IMUIMessageStatusViewProtocal> _Nonnull)statusView {
+- (id <IMUIMessageStatusViewProtocol> _Nonnull)statusView {
   return _layout.statusView;
 }
 
@@ -84,10 +85,9 @@
   return _layout.nameLabelFrame;
 }
 
-- (id <IMUIMessageContentViewProtocal> _Nonnull)bubbleContentView {
+- (id <IMUIMessageContentViewProtocol> _Nonnull)bubbleContentView {
   if ([_bubbleContentType isEqual: @"Text"]) {
     return [JMTextBubbleContentView new];
-//    return [IMUITextMessageContentView new];
   }
   
   if ([_bubbleContentType isEqual: @"Voice"]) {
@@ -99,10 +99,10 @@
   }
   
   if ([_bubbleContentType isEqual: @"Video"]) {
-    return [IMUIVideoMessageContentView new];
+    return [JMVideoBubbleContentView new];
   }
   
-  return [IMUITextMessageContentView new];
+  return [JMTextBubbleContentView new];
 }
 
 - (NSString * _Nonnull)bubbleContentType {

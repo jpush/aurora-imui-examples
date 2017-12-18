@@ -10,6 +10,6 @@
 //#import <AuroraIMUI/AuroraIMUI-Swift.h>
 #import "JMessageOCDemo-Swift.h"
 
-@interface JMTextBubbleContentView : UIView <IMUIMessageContentViewProtocal>
+@interface JMTextBubbleContentView : UIView <IMUIMessageContentViewProtocol>
 - (void)layoutContentViewWithMessage:(id <IMUIMessageModelProtocol> _Nonnull)message;
 @end
