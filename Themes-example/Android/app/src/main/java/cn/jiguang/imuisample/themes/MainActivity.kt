@@ -8,8 +8,6 @@ import android.view.View
 
 import cn.jiguang.imuisample.R
 import cn.jiguang.imuisample.databinding.ActivityMainBinding
-import cn.jiguang.imuisample.themes.black.BlackActivity
-import cn.jiguang.imuisample.themes.default.DefaultActivity
 
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
@@ -22,19 +20,19 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     override fun onClick(view: View?) {
+        val intent = Intent(this, ThemeActivity::class.java)
         when (view?.id) {
             R.id.default_theme_btn -> {
-                val intent = Intent(this, DefaultActivity::class.java)
-                startActivity(intent)
+                intent.putExtra("style", ThemeStyle.DEFAULT.name)
             }
             R.id.light_theme_btn -> {
-
+                intent.putExtra("style", ThemeStyle.LIGHT.name)
             }
             R.id.black_theme_btn -> {
-                val intent = Intent(this, BlackActivity::class.java)
-                startActivity(intent)
+                intent.putExtra("style", ThemeStyle.BLACK.name)
             }
         }
+        startActivity(intent)
     }
 
 

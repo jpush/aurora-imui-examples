@@ -11,4 +11,12 @@ class MessageViewModel(private var context: Application, private var repository:
     fun loadMessages(callback: MessageDataSource.LoadHistoryMessages) {
         this.repository.getHistoryMessages(0, 10, callback)
     }
+
+    fun getMessage(id: String, callback: MessageDataSource.GetMessageCallback) {
+        this.repository.getMessage(id, callback)
+    }
+
+    fun getMessageByPrimaryKey(id: Int, callback: MessageDataSource.GetMessageCallback) {
+        this.repository.getMessageByPrimaryKey(id, callback)
+    }
 }

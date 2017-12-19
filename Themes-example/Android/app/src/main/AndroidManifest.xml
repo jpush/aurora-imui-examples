@@ -16,10 +16,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name="cn.jiguang.imuisample.themes.default.DefaultActivity"
-            android:windowSoftInputMode="adjustResize"
-            android:theme="@style/noTitle"/>
-        <activity android:name="cn.jiguang.imuisample.themes.black.BlackActivity"
+        <activity android:name="cn.jiguang.imuisample.themes.ThemeActivity"
             android:windowSoftInputMode="adjustResize"
             android:theme="@style/noTitle"/>
     </application>

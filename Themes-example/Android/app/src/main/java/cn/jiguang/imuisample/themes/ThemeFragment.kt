@@ -1,7 +1,8 @@
-package cn.jiguang.imuisample.themes.black
+package cn.jiguang.imuisample.themes
 
 import android.Manifest
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -15,14 +16,16 @@ import cn.jiguang.imui.chatinput.model.FileItem
 import cn.jiguang.imui.chatinput.model.VideoItem
 import cn.jiguang.imui.commons.ImageLoader
 import cn.jiguang.imui.commons.models.IMessage
+import cn.jiguang.imui.messages.CustomMsgConfig
 import cn.jiguang.imui.messages.MsgListAdapter
 import cn.jiguang.imui.messages.ptr.PtrDefaultHeader
 import cn.jiguang.imuisample.R
 import cn.jiguang.imuisample.data.DefaultUser
 import cn.jiguang.imuisample.data.MyMessage
 import cn.jiguang.imuisample.data.source.MessageDataSource
-import cn.jiguang.imuisample.databinding.FragmentBlackBinding
+import cn.jiguang.imuisample.databinding.FragmentThemeBinding
 import cn.jiguang.imuisample.model.MessageViewModel
+import cn.jiguang.imuisample.themes.black.BlackTxtViewHolder
 import cn.jiguang.imuisample.util.DisplayUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
@@ -30,51 +33,47 @@ import pub.devrel.easypermissions.EasyPermissions
 import java.text.SimpleDateFormat
 import java.util.*
 
-/**
- * Created by caiyaoguan on 2017/12/14.
- */
-class BlackFragment: Fragment(), View.OnTouchListener {
+class ThemeFragment : Fragment(), View.OnTouchListener {
+
     val RC_RECORD_VOICE : Int = 0x0001
     val RC_CAMERA : Int = 0x0002
     val RC_PHOTO : Int = 0x0003
+    val BLACK_SEND_TXT_TYPE : Int = 13
+    val BLACK_RECEIVE_TXT_TYPE : Int = 14
 
     companion object {
-        fun newInstance(): BlackFragment {
-            return BlackFragment()
+        var STYLE: ThemeStyle = ThemeStyle.DEFAULT
+        fun newInstance(style: ThemeStyle): ThemeFragment {
+            STYLE = style
+            return ThemeFragment()
         }
     }
 
-    var binding: FragmentBlackBinding? = null
+    var mBinding: FragmentThemeBinding? = null
     private var mViewModel: MessageViewModel? = null
     var mAdapter: MsgListAdapter<MyMessage>? = null
     var mImm : InputMethodManager? = null
     var mWindow : Window? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
-        val root = inflater?.inflate(R.layout.fragment_black, container, false)
-        if (binding == null) {
-            binding = FragmentBlackBinding.bind(root!!)
+        val root = inflater?.inflate(R.layout.fragment_theme, container, false)
+        if (mBinding == null) {
+            mBinding = FragmentThemeBinding.bind(root!!)
         }
-        mViewModel = BlackActivity.obtainViewModel(activity)
+        mViewModel = ThemeActivity.obtainViewModel(activity)
         setup()
-        binding!!.msgList.setOnTouchListener(this)
-        binding!!.chatInput.setOnTouchListener(this)
-        return binding!!.root
+        mBinding!!.msgList.setOnTouchListener(this)
+        mBinding!!.chatInput.setOnTouchListener(this)
+        return mBinding!!.root
     }
 
     fun setup() {
-        mImm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
-        mWindow = activity.window
-        val ptrLayout = binding!!.pullToRefreshLayout
+        val ptrLayout = mBinding!!.pullToRefreshLayout
         val header = PtrDefaultHeader(activity)
-        val colors = resources.getIntArray(R.array.google_colors)
-        header.setColorSchemeColors(colors)
-        header.layoutParams = RelativeLayout.LayoutParams(-1, -2)
-        header.setPadding(0, DisplayUtil.dp2px(activity, 15f), 0,
-                DisplayUtil.dp2px(activity, 10f))
-        header.setPtrFrameLayout(ptrLayout)
-        val msgList = binding!!.msgList
+        val msgList = mBinding!!.msgList
+        val chatInput = mBinding!!.chatInput
         val holdersConfig = MsgListAdapter.HoldersConfig()
+        // Construct image loader
         val imageLoader = object: ImageLoader {
             override fun loadImage(imageView: ImageView?, string: String?) {
                 // You can use other image load libraries.
@@ -100,10 +99,48 @@ class BlackFragment: Fragment(), View.OnTouchListener {
             }
         }
         mAdapter = MsgListAdapter("0", holdersConfig, imageLoader)
+
+        // config style
+        when(STYLE) {
+            // black theme
+            ThemeStyle.BLACK -> {
+                ptrLayout.setBackgroundColor(Color.parseColor("#F9FAFC"))
+                msgList.setSendBubbleDrawable(R.drawable.black_send_bubble)
+                msgList.setReceiveBubbleDrawable(R.drawable.black_receive_bubble)
+                // custom type
+                val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT_TYPE, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
+                val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT_TYPE, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
+                mAdapter!!.addCustomMsgType(BLACK_SEND_TXT_TYPE, blackSendTxtConfig)
+                mAdapter!!.addCustomMsgType(BLACK_RECEIVE_TXT_TYPE, blackReceiveTxtConfig)
+            }
+            ThemeStyle.LIGHT -> {
+                ptrLayout.setBackgroundColor(Color.WHITE)
+            }
+            else -> {
+                // default type, do nothing
+            }
+        }
+        mImm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+        mWindow = activity.window
+
+        val colors = resources.getIntArray(R.array.google_colors)
+        header.setColorSchemeColors(colors)
+        header.layoutParams = RelativeLayout.LayoutParams(-1, -2)
+        header.setPadding(0, DisplayUtil.dp2px(activity, 15f), 0,
+                DisplayUtil.dp2px(activity, 10f))
+        header.setPtrFrameLayout(ptrLayout)
         val sendUser = DefaultUser("0", "user1", "R.drawable.ironman")
         val msg1 = MyMessage("Hello world", IMessage.MessageType.SEND_TEXT, sendUser)
         val receiverUser = DefaultUser("1", "user2", "R.drawable.deadpool")
         val msg2 = MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT, receiverUser)
+        msg1.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+        msg2.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+        if (STYLE == ThemeStyle.BLACK) {
+            msg1.type = IMessage.MessageType.SEND_CUSTOM
+            msg2.type = IMessage.MessageType.RECEIVE_CUSTOM
+            msg1.setCustomType(BLACK_SEND_TXT_TYPE)
+            msg2.setCustomType(BLACK_RECEIVE_TXT_TYPE)
+        }
         mAdapter!!.addToStart(msg1, false)
         mAdapter!!.addToStart(msg2, false)
         msgList.setHasFixedSize(true)
@@ -126,7 +163,6 @@ class BlackFragment: Fragment(), View.OnTouchListener {
                 }
             })
         })
-        val chatInput = binding!!.chatInput
         chatInput.setMenuClickListener(object: OnMenuClickListener {
             override fun switchToMicrophoneMode(): Boolean {
                 scrollToBottom()
@@ -162,9 +198,22 @@ class BlackFragment: Fragment(), View.OnTouchListener {
                 if (input!!.isEmpty()) {
                     return false
                 }
-                val message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT)
+                val message: MyMessage
+                when (STYLE) {
+                    ThemeStyle.BLACK -> {
+                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_CUSTOM)
+                        message.setCustomType(BLACK_SEND_TXT_TYPE)
+                    }
+                    ThemeStyle.LIGHT -> {
+                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT)
+                    }
+                    else -> {
+                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT)
+                    }
+                }
+
                 message.user = DefaultUser("1", "Ironman", "R.drawable.ironman")
-                message.timeString = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
+                message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                 mAdapter!!.addToStart(message, true)
                 return true
             }
@@ -177,18 +226,18 @@ class BlackFragment: Fragment(), View.OnTouchListener {
                 var message: MyMessage
                 for (item in list) {
                     if (item.type == FileItem.Type.Image) {
-                        message = MyMessage(null, IMessage.MessageType.SEND_IMAGE)
+                        message = MyMessage("", IMessage.MessageType.SEND_IMAGE)
 
                     } else if (item.type == FileItem.Type.Video) {
-                        message = MyMessage(null, IMessage.MessageType.SEND_VIDEO)
+                        message = MyMessage("", IMessage.MessageType.SEND_VIDEO)
                         message.duration = (item as VideoItem).duration
 
                     } else {
                         throw RuntimeException("Invalid FileItem type. Must be Type.Image or Type.Video")
                     }
 
-                    message.timeString = SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date())
-                    message.mediaFilePath = item.filePath
+                    message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+                    message.setMediaFilePath(item.filePath)
                     message.user = DefaultUser("1", "Ironman", "R.drawable.ironman")
 
                     activity.runOnUiThread({ mAdapter!!.addToStart(message, true) })
@@ -233,8 +282,8 @@ class BlackFragment: Fragment(), View.OnTouchListener {
     override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
         when (motionEvent?.action) {
             MotionEvent.ACTION_DOWN -> {
-                val chatInputView = binding!!.chatInput
-                Log.i("DefaultFragment","on touch event ")
+                val chatInputView = mBinding!!.chatInput
+                Log.i("ThemeFragment","on touch event ")
                 if (view?.id == chatInputView.id) {
                     if (chatInputView.menuState == View.VISIBLE && !chatInputView.softInputState) {
                         chatInputView.dismissMenuAndResetSoftMode()
@@ -243,8 +292,8 @@ class BlackFragment: Fragment(), View.OnTouchListener {
                         return false
                     }
                 }
-                if (binding!!.chatInput.menuState == View.VISIBLE) {
-                    binding!!.chatInput.dismissMenuLayout()
+                if (mBinding!!.chatInput.menuState == View.VISIBLE) {
+                    mBinding!!.chatInput.dismissMenuLayout()
                 }
                 try {
                     val v = activity.currentFocus;
@@ -253,7 +302,7 @@ class BlackFragment: Fragment(), View.OnTouchListener {
                         mWindow!!.setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_ALWAYS_HIDDEN
                                 or WindowManager.LayoutParams.SOFT_INPUT_ADJUST_RESIZE)
                         view?.clearFocus()
-                        binding!!.chatInput.softInputState = false
+                        mBinding!!.chatInput.softInputState = false
                     }
                 } catch (e: Exception) {
                     e.printStackTrace()
@@ -265,4 +314,6 @@ class BlackFragment: Fragment(), View.OnTouchListener {
         }
         return false
     }
+
+
 }

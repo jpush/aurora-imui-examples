@@ -13,6 +13,8 @@ interface MessageDataSource {
 
     fun getMessage(id: String, callback: GetMessageCallback)
 
+    fun getMessageByPrimaryKey(id: Int, callback: GetMessageCallback)
+
     fun getHistoryMessages(from: Int, to: Int, callback: LoadHistoryMessages)
 
 }
