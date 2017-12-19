@@ -212,7 +212,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                     }
                 }
 
-                message.user = DefaultUser("1", "Ironman", "R.drawable.ironman")
+                message.user = DefaultUser("0", "user1", "R.drawable.ironman")
                 message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                 mAdapter!!.addToStart(message, true)
                 return true
@@ -238,7 +238,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
                     message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                     message.setMediaFilePath(item.filePath)
-                    message.user = DefaultUser("1", "Ironman", "R.drawable.ironman")
+                    message.user = DefaultUser("0", "user1", "R.drawable.ironman")
 
                     activity.runOnUiThread({ mAdapter!!.addToStart(message, true) })
                 }
