@@ -1,25 +1,27 @@
-package cn.jiguang.imuisample.themes.black
+package cn.jiguang.imuisample.themes
 
 import android.arch.lifecycle.ViewModelProviders
 import android.databinding.DataBindingUtil
 import android.os.Bundle
+import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentActivity
 import android.support.v7.app.AppCompatActivity
+import android.util.Log
 import cn.jiguang.imuisample.R
 import cn.jiguang.imuisample.ViewModelFactory
-import cn.jiguang.imuisample.databinding.ActivityBlackBinding
+import cn.jiguang.imuisample.databinding.ActivityThemeBinding
 import cn.jiguang.imuisample.model.MessageViewModel
 import cn.jiguang.imuisample.util.ActivityUtils
 
-class BlackActivity : AppCompatActivity() {
 
-    lateinit private var mBinding: ActivityBlackBinding
+class ThemeActivity : AppCompatActivity() {
+
+    lateinit private var mBinding: ActivityThemeBinding
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_black)
-
+        mBinding = DataBindingUtil.setContentView(this, R.layout.activity_theme)
         val fragment = obtainViewFragment()
         ActivityUtils.replaceFragmentInActivity(supportFragmentManager,
                 fragment, mBinding.contentFrame.id)
@@ -33,14 +35,14 @@ class BlackActivity : AppCompatActivity() {
         }
     }
 
-    private fun obtainViewFragment(): BlackFragment {
-        // View Fragment
-        val fragment = BlackFragment.newInstance()
-        // Send the task ID to the fragment
-//            val bundle = Bundle()
-//            bundle.putString(DefaultFragment.ARGUMENT_EDIT_TASK_ID,
-//                    intent.getStringExtra(DefaultFragment.ARGUMENT_EDIT_TASK_ID))
-//            addEditTaskFragment!!.setArguments(bundle)
-        return fragment
+    private fun obtainViewFragment(): Fragment {
+        var style = ThemeStyle.DEFAULT
+        val styleStr = intent.getStringExtra("style")
+        if (styleStr == ThemeStyle.BLACK.name) {
+            style = ThemeStyle.BLACK
+        } else {
+            style = ThemeStyle.LIGHT
+        }
+        return ThemeFragment.newInstance(style)
     }
 }

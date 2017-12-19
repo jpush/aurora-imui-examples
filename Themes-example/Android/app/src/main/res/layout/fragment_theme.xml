@@ -14,7 +14,7 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        tools:context=".themes.default.DefaultFragment">
+        tools:context=".themes.ThemeFragment">
 
         <cn.jiguang.imui.chatinput.ChatInputView
             android:id="@+id/chat_input"
@@ -32,6 +32,7 @@
             app:PtrPullToRefresh="true"
             app:PtrRatioHeightToRefresh="1.2"
             app:PtrResistance="1.2"
+            android:background="#f3f3f3"
             android:layout_above="@+id/chat_input">
 
             <cn.jiguang.imui.messages.MessageList
@@ -49,10 +50,8 @@
                 app:receiveTextSize="16sp"
                 app:sendBubblePaddingLeft="8dp"
                 app:sendBubblePaddingRight="16dp"
-                app:sendTextColor="#696E74"
+                app:sendTextColor="#7587A8"
                 app:sendTextSize="16sp"
-                app:sendBubbleDrawable="@drawable/black_send_bubble"
-                app:receiveBubbleDrawable="@drawable/black_receive_bubble"
                 app:showReceiverDisplayName="SHOW"
                 app:showSenderDisplayName="HIDE"/>
 

@@ -26,7 +26,11 @@ class MessageRepository(private var source: MessageLocalDataSource): MessageData
     }
 
     override fun getMessage(id: String, callback: MessageDataSource.GetMessageCallback) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+        source.getMessage(id, callback)
+    }
+
+    override fun getMessageByPrimaryKey(id: Int, callback: MessageDataSource.GetMessageCallback) {
+        source.getMessageByPrimaryKey(id, callback)
     }
 
     override fun getHistoryMessages(from: Int, to: Int, callback: MessageDataSource.LoadHistoryMessages) {

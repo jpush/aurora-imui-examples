@@ -10,6 +10,12 @@ interface MessageDao {
     @Query("SELECT * FROM messages WHERE entryId >= :from AND entryId <= :to")
     fun getHistoryMessages(from:Int, to: Int):List<MyMessage>
 
+    @Query("SELECT * FROM messages WHERE msgId = :id")
+    fun getMessage(id: String): MyMessage
+
+    @Query("SELECT * FROM messages WHERE entryId = :id")
+    fun getMessageByPrimaryKey(id: Int): MyMessage
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertMessage(message: MyMessage)
 

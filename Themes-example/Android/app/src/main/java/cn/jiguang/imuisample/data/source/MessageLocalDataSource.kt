@@ -22,6 +22,21 @@ class MessageLocalDataSource(private var appExcutors: AppExecutors, private var 
     }
 
     override fun getMessage(id: String, callback: MessageDataSource.GetMessageCallback) {
+        val runnable = Runnable {
+            val message = msgDao.getMessage(id)
+            print("Get message, msg id: $id + $message")
+            callback.onResult(message)
+        }
+        appExcutors.diskIO().execute(runnable)
+    }
+
+    override fun getMessageByPrimaryKey(id: Int, callback: MessageDataSource.GetMessageCallback) {
+        val runnable = Runnable {
+            val message = msgDao.getMessageByPrimaryKey(id)
+            print("Get message, id: $id + $message")
+            callback.onResult(message)
+        }
+        appExcutors.diskIO().execute(runnable)
     }
 
     override fun getHistoryMessages(from: Int, to: Int, callback: MessageDataSource.LoadHistoryMessages) {
@@ -31,7 +46,8 @@ class MessageLocalDataSource(private var appExcutors: AppExecutors, private var 
             if (messages.isNotEmpty()) {
                 callback.onResult(messages)
             } else {
-                callback.onResult(fakeData())
+//                callback.onResult(fakeData())
+                callback.onResult(messages)
             }
         }
         appExcutors.diskIO().execute(runnable)
