@@ -9,4 +9,7 @@
     <color name="google_blue">#FF375BF1</color>
     <color name="google_yellow">#FFF7D23E</color>
     <color name="google_green">#FF34A350</color>
+
+    <color name="light_send_text_color">#ffffff</color>
+    <color name="light_receive_text_color">#8D8E8E</color>
 </resources>

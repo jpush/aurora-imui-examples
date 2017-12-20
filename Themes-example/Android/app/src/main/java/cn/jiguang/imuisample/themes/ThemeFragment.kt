@@ -4,14 +4,19 @@ import android.Manifest
 import android.content.Context
 import android.graphics.Color
 import android.os.Bundle
+import android.os.Environment
 import android.os.Handler
 import android.support.v4.app.Fragment
+import android.text.format.DateFormat
 import android.util.Log
 import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import cn.jiguang.imui.chatinput.listener.CameraControllerListener
+import cn.jiguang.imui.chatinput.listener.OnCameraCallbackListener
 import cn.jiguang.imui.chatinput.listener.OnMenuClickListener
+import cn.jiguang.imui.chatinput.listener.RecordVoiceListener
 import cn.jiguang.imui.chatinput.model.FileItem
 import cn.jiguang.imui.chatinput.model.VideoItem
 import cn.jiguang.imui.commons.ImageLoader
@@ -30,6 +35,7 @@ import cn.jiguang.imuisample.util.DisplayUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
 import pub.devrel.easypermissions.EasyPermissions
+import java.io.File
 import java.text.SimpleDateFormat
 import java.util.*
 
@@ -100,6 +106,12 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         }
         mAdapter = MsgListAdapter("0", holdersConfig, imageLoader)
 
+        val sendUser = DefaultUser("0", "user1", "R.drawable.ironman")
+        val msg1 = MyMessage("Hello world", IMessage.MessageType.SEND_TEXT, sendUser)
+        val receiverUser = DefaultUser("1", "user2", "R.drawable.deadpool")
+        val msg2 = MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT, receiverUser)
+        msg1.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+        msg2.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         // config style
         when(STYLE) {
             // black theme
@@ -107,7 +119,15 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 ptrLayout.setBackgroundColor(Color.parseColor("#F9FAFC"))
                 msgList.setSendBubbleDrawable(R.drawable.black_send_bubble)
                 msgList.setReceiveBubbleDrawable(R.drawable.black_receive_bubble)
+                msgList.setSendBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+                msgList.setSendBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+                msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+                msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
                 // custom type
+                msg1.type = IMessage.MessageType.SEND_CUSTOM
+                msg2.type = IMessage.MessageType.RECEIVE_CUSTOM
+                msg1.setCustomType(BLACK_SEND_TXT_TYPE)
+                msg2.setCustomType(BLACK_RECEIVE_TXT_TYPE)
                 val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT_TYPE, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
                 val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT_TYPE, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
                 mAdapter!!.addCustomMsgType(BLACK_SEND_TXT_TYPE, blackSendTxtConfig)
@@ -115,11 +135,25 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
             ThemeStyle.LIGHT -> {
                 ptrLayout.setBackgroundColor(Color.WHITE)
+                msgList.setSendBubbleDrawable(R.drawable.light_send_bubble)
+                msgList.setReceiveBubbleDrawable(R.drawable.light_receive_bubble)
+                msgList.setSendBubbleTextColor(activity.resources.getColor(R.color.light_send_text_color))
+                msgList.setReceiveBubbleTextColor(activity.resources.getColor(R.color.light_receive_text_color))
+                msgList.setSendBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+                msgList.setSendBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+                msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+                msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+                msgList.setSendBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
+                msgList.setSendBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
+                msgList.setReceiveBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
+                msgList.setReceiveBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
             }
             else -> {
                 // default type, do nothing
             }
         }
+        mAdapter!!.addToStart(msg1, false)
+        mAdapter!!.addToStart(msg2, false)
         mImm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
         mWindow = activity.window
 
@@ -129,20 +163,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         header.setPadding(0, DisplayUtil.dp2px(activity, 15f), 0,
                 DisplayUtil.dp2px(activity, 10f))
         header.setPtrFrameLayout(ptrLayout)
-        val sendUser = DefaultUser("0", "user1", "R.drawable.ironman")
-        val msg1 = MyMessage("Hello world", IMessage.MessageType.SEND_TEXT, sendUser)
-        val receiverUser = DefaultUser("1", "user2", "R.drawable.deadpool")
-        val msg2 = MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT, receiverUser)
-        msg1.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
-        msg2.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
-        if (STYLE == ThemeStyle.BLACK) {
-            msg1.type = IMessage.MessageType.SEND_CUSTOM
-            msg2.type = IMessage.MessageType.RECEIVE_CUSTOM
-            msg1.setCustomType(BLACK_SEND_TXT_TYPE)
-            msg2.setCustomType(BLACK_RECEIVE_TXT_TYPE)
-        }
-        mAdapter!!.addToStart(msg1, false)
-        mAdapter!!.addToStart(msg2, false)
+
         msgList.setHasFixedSize(true)
         msgList.setAdapter(mAdapter)
         ptrLayout.setLoadingMinTime(1000)
@@ -260,6 +281,57 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
         chatInput.setOnClickEditTextListener({
             Handler().postDelayed({ msgList.smoothScrollToPosition(0) }, 100)
+        })
+
+        // Record voice callback
+        chatInput.recordVoiceButton.setRecordVoiceListener(object : RecordVoiceListener {
+            override fun onFinishRecord(voiceFile: File, duration: Int) {
+                val message = MyMessage("", IMessage.MessageType.SEND_VOICE)
+                message.user = DefaultUser("0", "user1", "R.drawable.ironman")
+                message.setMediaFilePath(voiceFile.path)
+                message.duration = duration.toLong()
+                message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+                mAdapter!!.addToStart(message, true)
+            }
+
+            override fun onCancelRecord() {
+            }
+
+            override fun onStartRecord() {
+                // set voice file path, after recording, audio file will save here
+                val path = Environment.getExternalStorageDirectory().path + "/voice"
+                val destDir = File(path)
+                if (!destDir.exists()) {
+                    destDir.mkdirs()
+                }
+                chatInput.recordVoiceButton.setVoiceFilePath(destDir.path, DateFormat.format("yyyy-MM-dd-hhmmss",
+                        Calendar.getInstance(Locale.getDefault())).toString() + "")
+            }
+
+        })
+
+        // Camera callback
+        chatInput.setOnCameraCallbackListener(object : OnCameraCallbackListener {
+            override fun onFinishVideoRecord(videoPath: String) {
+
+            }
+
+            override fun onCancelVideoRecord() {
+            }
+
+            override fun onTakePictureCompleted(photoPath: String) {
+                val message = MyMessage("", IMessage.MessageType.SEND_IMAGE)
+                message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+                message.setMediaFilePath(photoPath)
+                message.user = DefaultUser("0", "user1", "R.drawable.ironman")
+                activity.runOnUiThread( Runnable {
+                    mAdapter!!.addToStart(message, true)
+                })
+            }
+
+            override fun onStartVideoRecord() {
+            }
+
         })
 
         mAdapter!!.setOnMsgClickListener {
