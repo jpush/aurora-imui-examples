@@ -45,7 +45,7 @@ class ThemeActivity : AppCompatActivity() {
             style = ThemeStyle.BLACK
             mBinding.chatTitleBar!!.setBackgroundColor(Color.parseColor("#3A4149"))
             titleTv.text = resources.getString(R.string.black_theme)
-        } else {
+        } else if (styleStr == ThemeStyle.LIGHT.name) {
             style = ThemeStyle.LIGHT
             titleTv.text = resources.getString(R.string.light_theme)
         }

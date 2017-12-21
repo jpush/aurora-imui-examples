@@ -53,7 +53,7 @@
                 app:sendBubblePaddingRight="16dp"
                 app:sendTextColor="#7587A8"
                 app:sendTextSize="16sp"
-                app:showReceiverDisplayName="SHOW"
+                app:showReceiverDisplayName="HIDE"
                 app:showSenderDisplayName="HIDE"/>
 
         </cn.jiguang.imui.messages.ptr.PullToRefreshLayout>
