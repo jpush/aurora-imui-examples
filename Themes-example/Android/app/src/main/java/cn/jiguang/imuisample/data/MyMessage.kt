@@ -15,7 +15,7 @@ import cn.jiguang.imui.commons.models.IUser
 @Entity(tableName = "messages")
 class MyMessage(@field:ColumnInfo(name = "msgId")
                 private var mMsgId: String, private var text: String?, private var timeString: String?,
-                private var type: IMessage.MessageType = IMessage.MessageType.SEND_TEXT,
+                private var type: Int,
                 @field:Embedded
                 var user: DefaultUser?, private var mediaFilePath: String?, private var duration: Long,
                 private var progress: String?) : IMessage {
@@ -25,12 +25,12 @@ class MyMessage(@field:ColumnInfo(name = "msgId")
     var id: Int = 0
 
     @Ignore
-    constructor(text: String, type: IMessage.MessageType)
+    constructor(text: String, type: Int)
             : this(UUID.randomUUID().toString(), text, "", type, null, "", 0, "") {
     }
 
     @Ignore
-    constructor(text: String, type: IMessage.MessageType, user: DefaultUser)
+    constructor(text: String, type: Int, user: DefaultUser)
             : this(UUID.randomUUID().toString(), text, "", type, user, "", 0, "") {
     }
 
@@ -76,15 +76,12 @@ class MyMessage(@field:ColumnInfo(name = "msgId")
         return timeString
     }
 
-    fun setCustomType(type: Int) {
-        this.type.customType = type
-    }
 
-    fun setType(type: IMessage.MessageType) {
+    fun setType(type: Int) {
         this.type = type
     }
 
-    override fun getType(): IMessage.MessageType {
+    override fun getType(): Int {
         return type
     }
 

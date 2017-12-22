@@ -7,8 +7,7 @@ import android.arch.persistence.room.TypeConverters
 import android.content.Context
 import cn.jiguang.imuisample.data.MyMessage
 
-@Database(entities = arrayOf(MyMessage::class), version = 2, exportSchema = false)
-@TypeConverters(MessageDao.MessageConverter::class)
+@Database(entities = arrayOf(MyMessage::class), version = 3, exportSchema = false)
 abstract class MyDatabase : RoomDatabase() {
 
     abstract fun messageDao(): MessageDao
