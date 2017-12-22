@@ -60,10 +60,10 @@ class MessageLocalDataSource(private var appExcutors: AppExecutors, private var 
             print("Message $i is creating")
             if (i % 2 == 0) {
                 val user = DefaultUser("0", "user1", "R.drawable.ironman")
-                list.add(MyMessage("Hello", IMessage.MessageType.SEND_TEXT, user))
+                list.add(MyMessage("Hello", IMessage.MessageType.SEND_TEXT.ordinal, user))
             } else {
                 val user = DefaultUser("1", "user2", "R.drawable.deadpool")
-                list.add(MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT, user))
+                list.add(MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT.ordinal, user))
             }
         }
         return list

@@ -13,7 +13,6 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
-import cn.jiguang.imui.chatinput.listener.CameraControllerListener
 import cn.jiguang.imui.chatinput.listener.OnCameraCallbackListener
 import cn.jiguang.imui.chatinput.listener.OnMenuClickListener
 import cn.jiguang.imui.chatinput.listener.RecordVoiceListener
@@ -31,6 +30,7 @@ import cn.jiguang.imuisample.data.source.MessageDataSource
 import cn.jiguang.imuisample.databinding.FragmentThemeBinding
 import cn.jiguang.imuisample.model.MessageViewModel
 import cn.jiguang.imuisample.themes.black.BlackTxtViewHolder
+import cn.jiguang.imuisample.themes.black.BlackVoiceViewHolder
 import cn.jiguang.imuisample.util.DisplayUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
@@ -44,10 +44,13 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
     val RC_RECORD_VOICE : Int = 0x0001
     val RC_CAMERA : Int = 0x0002
     val RC_PHOTO : Int = 0x0003
-    val BLACK_SEND_TXT_TYPE : Int = 13
-    val BLACK_RECEIVE_TXT_TYPE : Int = 14
 
     companion object {
+        val BLACK_SEND_TXT: Int = 13
+        val BLACK_RECEIVE_TXT: Int = 14
+        val BLACK_SEND_VOICE: Int = 15
+        val BLACK_RECEIVE_VOICE: Int = 16
+        val LIGHT_SEND_TXT : Int = 17
         var STYLE: ThemeStyle = ThemeStyle.DEFAULT
         fun newInstance(style: ThemeStyle): ThemeFragment {
             STYLE = style
@@ -107,9 +110,9 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         mAdapter = MsgListAdapter("0", holdersConfig, imageLoader)
 
         val sendUser = DefaultUser("0", "user1", "R.drawable.ironman")
-        val msg1 = MyMessage("Hello world", IMessage.MessageType.SEND_TEXT, sendUser)
+        val msg1 = MyMessage("Hello world", IMessage.MessageType.SEND_TEXT.ordinal, sendUser)
         val receiverUser = DefaultUser("1", "user2", "R.drawable.deadpool")
-        val msg2 = MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT, receiverUser)
+        val msg2 = MyMessage("Hi", IMessage.MessageType.RECEIVE_TEXT.ordinal, receiverUser)
         msg1.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         msg2.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         // config style
@@ -124,14 +127,16 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
                 msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
                 // custom type
-                msg1.type = IMessage.MessageType.SEND_CUSTOM
-                msg2.type = IMessage.MessageType.RECEIVE_CUSTOM
-                msg1.setCustomType(BLACK_SEND_TXT_TYPE)
-                msg2.setCustomType(BLACK_RECEIVE_TXT_TYPE)
-                val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT_TYPE, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
-                val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT_TYPE, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
-                mAdapter!!.addCustomMsgType(BLACK_SEND_TXT_TYPE, blackSendTxtConfig)
-                mAdapter!!.addCustomMsgType(BLACK_RECEIVE_TXT_TYPE, blackReceiveTxtConfig)
+                msg1.type = BLACK_SEND_TXT
+                msg2.type = BLACK_RECEIVE_TXT
+                val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
+                val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
+                val blackSendVoiceConfig = CustomMsgConfig(BLACK_SEND_VOICE, R.layout.item_msglist_black_send_voice, true, BlackVoiceViewHolder::class.java)
+                val blackReceiveVoiceConfig = CustomMsgConfig(BLACK_RECEIVE_VOICE, R.layout.item_msglist_black_receive_txt, false, BlackVoiceViewHolder::class.java)
+                mAdapter!!.addCustomMsgType(BLACK_SEND_TXT, blackSendTxtConfig)
+                mAdapter!!.addCustomMsgType(BLACK_RECEIVE_TXT, blackReceiveTxtConfig)
+                mAdapter!!.addCustomMsgType(BLACK_SEND_VOICE, blackSendVoiceConfig)
+                mAdapter!!.addCustomMsgType(BLACK_RECEIVE_VOICE, blackReceiveVoiceConfig)
             }
             ThemeStyle.LIGHT -> {
                 ptrLayout.setBackgroundColor(Color.WHITE)
@@ -147,6 +152,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 msgList.setSendBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
                 msgList.setReceiveBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
                 msgList.setReceiveBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
+                msgList.setSendVoiceDrawable(R.drawable.light_send_voice_bg)
             }
             else -> {
                 // default type, do nothing
@@ -222,14 +228,13 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 val message: MyMessage
                 when (STYLE) {
                     ThemeStyle.BLACK -> {
-                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_CUSTOM)
-                        message.setCustomType(BLACK_SEND_TXT_TYPE)
+                        message = MyMessage(input.toString(), BLACK_SEND_TXT)
                     }
                     ThemeStyle.LIGHT -> {
-                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT)
+                        message = MyMessage(input.toString(), LIGHT_SEND_TXT)
                     }
                     else -> {
-                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT)
+                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT.ordinal)
                     }
                 }
 
@@ -247,10 +252,10 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 var message: MyMessage
                 for (item in list) {
                     if (item.type == FileItem.Type.Image) {
-                        message = MyMessage("", IMessage.MessageType.SEND_IMAGE)
+                        message = MyMessage("", IMessage.MessageType.SEND_IMAGE.ordinal)
 
                     } else if (item.type == FileItem.Type.Video) {
-                        message = MyMessage("", IMessage.MessageType.SEND_VIDEO)
+                        message = MyMessage("", IMessage.MessageType.SEND_VIDEO.ordinal)
                         message.duration = (item as VideoItem).duration
 
                     } else {
@@ -286,7 +291,10 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         // Record voice callback
         chatInput.recordVoiceButton.setRecordVoiceListener(object : RecordVoiceListener {
             override fun onFinishRecord(voiceFile: File, duration: Int) {
-                val message = MyMessage("", IMessage.MessageType.SEND_VOICE)
+                val message = MyMessage("", IMessage.MessageType.SEND_VOICE.ordinal)
+                if (STYLE == ThemeStyle.BLACK) {
+                    message.type = BLACK_SEND_VOICE
+                }
                 message.user = DefaultUser("0", "user1", "R.drawable.ironman")
                 message.setMediaFilePath(voiceFile.path)
                 message.duration = duration.toLong()
@@ -320,7 +328,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun onTakePictureCompleted(photoPath: String) {
-                val message = MyMessage("", IMessage.MessageType.SEND_IMAGE)
+                val message = MyMessage("", IMessage.MessageType.SEND_IMAGE.ordinal)
                 message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                 message.setMediaFilePath(photoPath)
                 message.user = DefaultUser("0", "user1", "R.drawable.ironman")
