@@ -68,7 +68,7 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
         val isAvatarExists = message.fromUser.avatarFilePath != null && !message.fromUser.avatarFilePath.isEmpty()
         if (isAvatarExists && mImageLoader != null) {
             if (mPosition + 1 < mData.size) {
-                val lastWrapper = mData.get(mPosition + 1)
+                val lastWrapper = mData[mPosition + 1]
                 if (lastWrapper.item is IMessage) {
                     val lastMsg = lastWrapper.item as MyMessage
                     // config time string

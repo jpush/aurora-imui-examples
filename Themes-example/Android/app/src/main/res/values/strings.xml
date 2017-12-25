@@ -3,6 +3,7 @@
     <string name="default_theme">Default Theme</string>
     <string name="light_theme">Light Theme</string>
     <string name="black_theme">Black Theme</string>
+    <string name="receive_message">Receive Message</string>
 
     <string name="rationale_record_voice">This app needs access microphone to record voice.</string>
     <string name="rationale_photo">This app needs access photos.</string>

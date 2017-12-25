@@ -51,6 +51,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val BLACK_SEND_VOICE: Int = 15
         val BLACK_RECEIVE_VOICE: Int = 16
         val LIGHT_SEND_TXT : Int = 17
+        val LIGHT_RECEIVE_TXT : Int = 18
         var STYLE: ThemeStyle = ThemeStyle.DEFAULT
         fun newInstance(style: ThemeStyle): ThemeFragment {
             STYLE = style
@@ -352,6 +353,20 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
         mAdapter!!.setMsgLongClickListener {
             // do something
+        }
+        mBinding!!.receiveMsgBtn.setOnClickListener {
+            val message = MyMessage("Test", IMessage.MessageType.RECEIVE_TEXT.ordinal)
+            when (STYLE) {
+                ThemeStyle.BLACK -> {
+                    message.type = BLACK_RECEIVE_TXT
+                }
+                ThemeStyle.LIGHT -> {
+                    message.type = LIGHT_RECEIVE_TXT
+                }
+            }
+            message.user = DefaultUser("1", "user2", "R.drawable.deadpool")
+            message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
+            mAdapter!!.addToStart(message, true)
         }
     }
 
