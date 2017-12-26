@@ -31,7 +31,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="black"/>
                                 <connections>
-                                    <segue destination="U7E-jA-UoU" kind="push" id="QA5-wa-fyn"/>
+                                    <segue destination="rWm-sR-dYX" kind="push" id="QA5-wa-fyn"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Q7x-9p-0MI">
@@ -39,7 +39,7 @@
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="light"/>
                                 <connections>
-                                    <segue destination="XVq-C0-aUg" kind="push" id="FWk-Sy-TFb"/>
+                                    <segue destination="fAh-JU-0Dx" kind="push" id="g5k-Z0-c9h"/>
                                 </connections>
                             </button>
                         </subviews>
@@ -51,6 +51,22 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="654" y="801"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="kjO-ik-3hZ">
+            <objects>
+                <viewController id="rWm-sR-dYX" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="fEO-Oj-yY4">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                        <viewLayoutGuide key="safeArea" id="oDW-Nx-OpI"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="eGZ-Y3-Hdd"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="W6r-gu-rfj" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1518" y="788"/>
         </scene>
         <!--View Controller-->
         <scene sceneID="9dc-Qn-H0S">
@@ -84,35 +100,15 @@
             </objects>
             <point key="canvasLocation" x="655" y="32"/>
         </scene>
-        <!--DefaultChatViewController-->
+        <!--Storyboard Reference-->
         <scene sceneID="4xI-94-Dmw">
             <objects>
-                <viewControllerPlaceholder storyboardIdentifier="DefaultChatViewController" storyboardName="DefaultChatViewController" referencedIdentifier="DefaultChatViewController" id="YAu-mv-00l" sceneMemberID="viewController">
+                <viewControllerPlaceholder storyboardIdentifier="DefaultChatViewController" id="YAu-mv-00l" sceneMemberID="viewController">
                     <navigationItem key="navigationItem" id="7ns-Wn-w4D"/>
                 </viewControllerPlaceholder>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="H2G-lO-IUS" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1374" y="773"/>
-        </scene>
-        <!--BlackChatViewController-->
-        <scene sceneID="tk9-yk-9CM">
-            <objects>
-                <viewControllerPlaceholder storyboardIdentifier="BlackChatViewController" storyboardName="BlackChatViewController" referencedIdentifier="BlackChatViewController" id="U7E-jA-UoU" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="ouN-lw-Jd0"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="pq2-if-h5S" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1389" y="819"/>
-        </scene>
-        <!--LightChatViewController-->
-        <scene sceneID="Xq9-Nc-PVc">
-            <objects>
-                <viewControllerPlaceholder storyboardName="LightChatViewController" referencedIdentifier="LightChatViewController" id="XVq-C0-aUg" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="Tqh-w2-h86"/>
-                </viewControllerPlaceholder>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="2fg-Yh-epA" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="1374" y="870"/>
+            <point key="canvasLocation" x="1353" y="312"/>
         </scene>
     </scenes>
 </document>
