@@ -1,4 +1,4 @@
-package cn.jiguang.imuisample.themes.black
+package cn.jiguang.imuisample.themes.light
 
 import android.graphics.drawable.AnimationDrawable
 import android.media.AudioManager
@@ -23,10 +23,8 @@ import java.io.IOException
 import java.text.SimpleDateFormat
 import java.util.*
 
-
-open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSender: Boolean)
+class LightVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSender: Boolean)
     : BaseMessageViewHolder<MESSAGE>(itemView), MsgListAdapter.DefaultMessageViewHolder {
-
     var mMsgTv: TextView? = null
     private var mDateTv: TextView? = null
     private var mDisplayNameTv: TextView? = null
@@ -144,9 +142,9 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
             mController!!.notifyAnimStop()
             mController!!.message = message
             if (mIsSender) {
-                mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_bg)
+                mVoiceAnimIv!!.setImageResource(R.drawable.light_send_voice_bg)
             } else {
-                mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_bg)
+                mVoiceAnimIv!!.setImageResource(R.drawable.light_receive_voice_bg)
             }
             mVoiceAnimation = mVoiceAnimIv!!.drawable as AnimationDrawable
             mController!!.addView(adapterPosition, mVoiceAnimIv)
@@ -157,9 +155,9 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
                     pauseVoice()
                     mVoiceAnimation!!.stop()
                     if (mIsSender) {
-                        mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_3)
+                        mVoiceAnimIv!!.setImageResource(R.drawable.light_send_voice_3)
                     } else {
-                        mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_3)
+                        mVoiceAnimIv!!.setImageResource(R.drawable.light_receive_voice_3)
                     }
                 } else if (mSetData) {
                     mMediaPlayer.start()
@@ -208,9 +206,9 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
                 mp.reset()
                 mSetData = false
                 if (mIsSender) {
-                    mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_3)
+                    mVoiceAnimIv!!.setImageResource(R.drawable.light_send_voice_3)
                 } else {
-                    mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_3)
+                    mVoiceAnimIv!!.setImageResource(R.drawable.light_receive_voice_3)
                 }
             }
         } catch (e: IOException) {
@@ -236,7 +234,7 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
         mDateTv!!.textSize = style.dateTextSize
         mDateTv!!.setTextColor(style.dateTextColor)
         if (mIsSender) {
-            mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_3)
+            mVoiceAnimIv!!.setImageResource(R.drawable.light_send_voice_3)
             mMsgTv!!.background = style.sendBubbleDrawable
             if (style.sendingProgressDrawable != null) {
                 mSendingPb!!.progressDrawable = style.sendingProgressDrawable
@@ -250,7 +248,7 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
                 mDisplayNameTv!!.visibility = View.GONE
             }
         } else {
-            mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_3)
+            mVoiceAnimIv!!.setImageResource(R.drawable.light_receive_voice_3)
             mMsgTv!!.background = style.receiveBubbleDrawable
             if (style.showReceiverDisplayName == 1) {
                 mDisplayNameTv!!.visibility = View.VISIBLE
@@ -262,5 +260,4 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
         mAvatarIv!!.layoutParams.height = style.avatarHeight
         mAvatarIv!!.setBorderRadius(style.avatarRadius)
     }
-
 }

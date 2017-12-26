@@ -86,11 +86,9 @@ class BlackTxtViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSend
                 IMessage.MessageStatus.SEND_GOING -> {
                     mSendingPb!!.visibility = View.VISIBLE
                     mResendIb!!.visibility = View.GONE
-                    Log.i("TxtViewHolder", "sending message")
                 }
                 IMessage.MessageStatus.SEND_FAILED -> {
                     mSendingPb!!.visibility = View.GONE
-                    Log.i("TxtViewHolder", "send message failed")
                     mResendIb!!.visibility = View.VISIBLE
                     mResendIb!!.setOnClickListener {
                         if (mMsgStatusViewClickListener != null) {
@@ -101,7 +99,6 @@ class BlackTxtViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSend
                 else -> {
                     mSendingPb!!.visibility = View.GONE
                     mResendIb!!.visibility = View.GONE
-                    Log.i("TxtViewHolder", "send message succeed")
                 }
             }
         }

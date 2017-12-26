@@ -16,68 +16,68 @@
 
         <cn.jiguang.imui.view.RoundImageView
             android:id="@+id/aurora_iv_msgitem_avatar"
-            style="@style/aurora_msgitem_sender_avatar_style"
+            style="@style/aurora_msgitem_receiver_avatar_style"
             android:src="@drawable/ironman"
-            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/aurora_tv_msgitem_date" />
 
         <TextView
-            android:id="@+id/aurora_tv_msgitem_sender_display_name"
-            style="@style/aurora_msgitem_sender_display_name_style"
+            android:id="@+id/aurora_tv_msgitem_receiver_display_name"
+            style="@style/aurora_msgitem_receiver_display_name_style"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="16dp"
+            android:layout_marginTop="8dp"
             app:layout_constraintTop_toBottomOf="@+id/aurora_tv_msgitem_date"
-            app:layout_constraintRight_toRightOf="@+id/aurora_iv_msgitem_avatar"
-            android:layout_marginRight="54dp"
-            android:layout_marginEnd="54dp"/>
+            app:layout_constraintLeft_toLeftOf="@+id/aurora_iv_msgitem_avatar"
+            android:layout_marginLeft="54dp"
+            android:layout_marginStart="54dp"
+            android:visibility="gone"/>
 
         <TextView
             android:id="@+id/aurora_tv_msgitem_message"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
-            android:layout_marginRight="10dp"
-            android:layout_marginEnd="10dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/aurora_iv_msgitem_avatar"
-            android:background="@drawable/black_send_bubble"/>
+            android:layout_marginLeft="50dp"
+            android:layout_marginStart="50dp"
+            app:layout_constraintLeft_toLeftOf="@id/aurora_iv_msgitem_avatar"
+            app:layout_constraintTop_toBottomOf="@+id/aurora_tv_msgitem_receiver_display_name"
+            android:background="@drawable/light_receive_bubble"/>
 
         <ImageView
             android:id="@+id/aurora_iv_msgitem_voice_anim"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginEnd="20dp"
-            app:layout_constraintRight_toRightOf="parent"
-            app:layout_constraintTop_toTopOf="@+id/aurora_tv_msgitem_message"
+            android:layout_marginLeft="70dp"
+            android:layout_marginStart="70dp"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/aurora_tv_msgitem_receiver_display_name"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:src="@drawable/black_send_voice_3" />
+            android:src="@drawable/light_receive_voice_3" />
 
         <TextView
             android:id="@+id/aurora_tv_voice_length"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="5dp"
-            android:layout_marginStart="5dp"
             android:text="3'"
-            android:layout_marginRight="45dp"
-            android:layout_marginEnd="45dp"
-            app:layout_constraintRight_toRightOf="@+id/aurora_iv_msgitem_voice_anim"
+            android:layout_marginLeft="45dp"
+            android:layout_marginStart="45dp"
+            android:layout_marginEnd="5dp"
+            android:layout_marginRight="5dp"
+            app:layout_constraintLeft_toLeftOf="@+id/aurora_iv_msgitem_voice_anim"
             app:layout_constraintTop_toTopOf="@+id/aurora_tv_msgitem_message"
             app:layout_constraintBottom_toBottomOf="parent"
-            android:textColor="#555555"
+            android:textColor="#8D8E8E"
             android:textSize="12sp" />
 
         <ProgressBar
             android:id="@+id/aurora_pb_msgitem_sending"
             android:layout_width="20dp"
             android:layout_height="20dp"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
-            app:layout_constraintVertical_bias="0.8"
-            app:layout_constraintTop_toBottomOf="@+id/aurora_tv_msgitem_sender_display_name"
-            app:layout_constraintRight_toLeftOf="@+id/aurora_tv_msgitem_message"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
+            app:layout_constraintVertical_bias="0.5"
+            app:layout_constraintTop_toBottomOf="@+id/aurora_tv_msgitem_receiver_display_name"
+            app:layout_constraintLeft_toRightOf="@+id/aurora_tv_msgitem_message"
             app:layout_constraintBottom_toBottomOf="parent"/>
 
         <ImageButton
@@ -85,14 +85,14 @@
             android:layout_width="20dp"
             android:layout_height="20dp"
             android:layout_centerVertical="true"
-            android:layout_marginRight="5dp"
-            android:layout_marginEnd="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginStart="5dp"
             android:background="@drawable/aurora_send_msg_error"
             android:scaleType="fitCenter"
-            app:layout_constraintTop_toBottomOf="@id/aurora_tv_msgitem_sender_display_name"
-            app:layout_constraintRight_toLeftOf="@+id/aurora_tv_msgitem_message"
+            app:layout_constraintTop_toBottomOf="@id/aurora_tv_msgitem_receiver_display_name"
+            app:layout_constraintLeft_toRightOf="@+id/aurora_tv_msgitem_message"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintVertical_bias="0.8"
+            app:layout_constraintVertical_bias="0.5"
             android:visibility="gone" />
 
     </android.support.constraint.ConstraintLayout>
