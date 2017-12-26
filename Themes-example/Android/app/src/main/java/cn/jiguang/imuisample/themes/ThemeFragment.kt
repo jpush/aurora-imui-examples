@@ -29,8 +29,10 @@ import cn.jiguang.imuisample.data.MyMessage
 import cn.jiguang.imuisample.data.source.MessageDataSource
 import cn.jiguang.imuisample.databinding.FragmentThemeBinding
 import cn.jiguang.imuisample.model.MessageViewModel
+import cn.jiguang.imuisample.themes.black.BlackImageViewHolder
 import cn.jiguang.imuisample.themes.black.BlackTxtViewHolder
 import cn.jiguang.imuisample.themes.black.BlackVoiceViewHolder
+import cn.jiguang.imuisample.themes.light.LightVoiceViewHolder
 import cn.jiguang.imuisample.util.DisplayUtil
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.target.Target
@@ -41,17 +43,23 @@ import java.util.*
 
 class ThemeFragment : Fragment(), View.OnTouchListener {
 
-    val RC_RECORD_VOICE : Int = 0x0001
-    val RC_CAMERA : Int = 0x0002
-    val RC_PHOTO : Int = 0x0003
+    val RC_RECORD_VOICE: Int = 0x0001
+    val RC_CAMERA: Int = 0x0002
+    val RC_PHOTO: Int = 0x0003
 
     companion object {
         val BLACK_SEND_TXT: Int = 13
         val BLACK_RECEIVE_TXT: Int = 14
         val BLACK_SEND_VOICE: Int = 15
         val BLACK_RECEIVE_VOICE: Int = 16
-        val LIGHT_SEND_TXT : Int = 17
-        val LIGHT_RECEIVE_TXT : Int = 18
+        val BLACK_SEND_IMAGE: Int = 17
+        val BLACK_RECEIVE_IMAGE: Int = 18
+        val LIGHT_SEND_TXT: Int = 19
+        val LIGHT_RECEIVE_TXT: Int = 20
+        val LIGHT_SEND_VOICE: Int = 21
+        val LIGHT_RECEIVE_VOICE: Int = 22
+        val LIGHT_SEND_IMAGE: Int = 23
+        val LIGHT_RECEIVE_IMAGE: Int = 24
         var STYLE: ThemeStyle = ThemeStyle.DEFAULT
         fun newInstance(style: ThemeStyle): ThemeFragment {
             STYLE = style
@@ -62,8 +70,8 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
     var mBinding: FragmentThemeBinding? = null
     private var mViewModel: MessageViewModel? = null
     var mAdapter: MsgListAdapter<MyMessage>? = null
-    var mImm : InputMethodManager? = null
-    var mWindow : Window? = null
+    var mImm: InputMethodManager? = null
+    var mWindow: Window? = null
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater?.inflate(R.layout.fragment_theme, container, false)
@@ -84,14 +92,14 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val chatInput = mBinding!!.chatInput
         val holdersConfig = MsgListAdapter.HoldersConfig()
         // Construct image loader
-        val imageLoader = object: ImageLoader {
+        val imageLoader = object : ImageLoader {
             override fun loadImage(imageView: ImageView?, string: String?) {
                 // You can use other image load libraries.
                 Glide.with(activity.applicationContext)
                         .load(string)
                         .fitCenter()
                         .placeholder(R.drawable.aurora_picture_not_found)
-                        .override(400, Target.SIZE_ORIGINAL)
+                        .override(400, 400)
                         .into(imageView)
             }
 
@@ -117,43 +125,16 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         msg1.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         msg2.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         // config style
-        when(STYLE) {
-            // black theme
+        when (STYLE) {
+        // black theme
             ThemeStyle.BLACK -> {
-                ptrLayout.setBackgroundColor(Color.parseColor("#F9FAFC"))
-                msgList.setSendBubbleDrawable(R.drawable.black_send_bubble)
-                msgList.setReceiveBubbleDrawable(R.drawable.black_receive_bubble)
-                msgList.setSendBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
-                msgList.setSendBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
-                msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
-                msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+                configBlackTheme()
                 // custom type
                 msg1.type = BLACK_SEND_TXT
                 msg2.type = BLACK_RECEIVE_TXT
-                val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
-                val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
-                val blackSendVoiceConfig = CustomMsgConfig(BLACK_SEND_VOICE, R.layout.item_msglist_black_send_voice, true, BlackVoiceViewHolder::class.java)
-                val blackReceiveVoiceConfig = CustomMsgConfig(BLACK_RECEIVE_VOICE, R.layout.item_msglist_black_receive_txt, false, BlackVoiceViewHolder::class.java)
-                mAdapter!!.addCustomMsgType(BLACK_SEND_TXT, blackSendTxtConfig)
-                mAdapter!!.addCustomMsgType(BLACK_RECEIVE_TXT, blackReceiveTxtConfig)
-                mAdapter!!.addCustomMsgType(BLACK_SEND_VOICE, blackSendVoiceConfig)
-                mAdapter!!.addCustomMsgType(BLACK_RECEIVE_VOICE, blackReceiveVoiceConfig)
             }
             ThemeStyle.LIGHT -> {
-                ptrLayout.setBackgroundColor(Color.WHITE)
-                msgList.setSendBubbleDrawable(R.drawable.light_send_bubble)
-                msgList.setReceiveBubbleDrawable(R.drawable.light_receive_bubble)
-                msgList.setSendBubbleTextColor(activity.resources.getColor(R.color.light_send_text_color))
-                msgList.setReceiveBubbleTextColor(activity.resources.getColor(R.color.light_receive_text_color))
-                msgList.setSendBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
-                msgList.setSendBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
-                msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
-                msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
-                msgList.setSendBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
-                msgList.setSendBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
-                msgList.setReceiveBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
-                msgList.setReceiveBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
-                msgList.setSendVoiceDrawable(R.drawable.light_send_voice_bg)
+                configLightTheme()
             }
             else -> {
                 // default type, do nothing
@@ -191,7 +172,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 }
             })
         })
-        chatInput.setMenuClickListener(object: OnMenuClickListener {
+        chatInput.setMenuClickListener(object : OnMenuClickListener {
             override fun switchToMicrophoneMode(): Boolean {
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.RECORD_AUDIO,
@@ -226,19 +207,10 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 if (input!!.isEmpty()) {
                     return false
                 }
-                val message: MyMessage
-                when (STYLE) {
-                    ThemeStyle.BLACK -> {
-                        message = MyMessage(input.toString(), BLACK_SEND_TXT)
-                    }
-                    ThemeStyle.LIGHT -> {
-                        message = MyMessage(input.toString(), LIGHT_SEND_TXT)
-                    }
-                    else -> {
-                        message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT.ordinal)
-                    }
+                val message = MyMessage(input.toString(), IMessage.MessageType.SEND_TEXT.ordinal)
+                if (STYLE == ThemeStyle.BLACK) {
+                    message.type = BLACK_SEND_TXT
                 }
-
                 message.user = DefaultUser("0", "user1", "R.drawable.ironman")
                 message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                 mAdapter!!.addToStart(message, true)
@@ -252,17 +224,21 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
                 var message: MyMessage
                 for (item in list) {
-                    if (item.type == FileItem.Type.Image) {
-                        message = MyMessage("", IMessage.MessageType.SEND_IMAGE.ordinal)
-
-                    } else if (item.type == FileItem.Type.Video) {
-                        message = MyMessage("", IMessage.MessageType.SEND_VIDEO.ordinal)
-                        message.duration = (item as VideoItem).duration
-
-                    } else {
-                        throw RuntimeException("Invalid FileItem type. Must be Type.Image or Type.Video")
+                    when (item.type) {
+                        FileItem.Type.Image -> {
+                            message = MyMessage("", IMessage.MessageType.SEND_IMAGE.ordinal)
+                            if (STYLE == ThemeStyle.BLACK) {
+                                message.type = BLACK_SEND_IMAGE
+                            }
+                        }
+                        FileItem.Type.Video -> {
+                            message = MyMessage("", IMessage.MessageType.SEND_VIDEO.ordinal)
+                            message.duration = (item as VideoItem).duration
+                        }
+                        else -> {
+                            throw RuntimeException("Invalid FileItem type. Must be Type.Image or Type.Video")
+                        }
                     }
-
                     message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                     message.setMediaFilePath(item.filePath)
                     message.user = DefaultUser("0", "user1", "R.drawable.ironman")
@@ -295,6 +271,8 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 val message = MyMessage("", IMessage.MessageType.SEND_VOICE.ordinal)
                 if (STYLE == ThemeStyle.BLACK) {
                     message.type = BLACK_SEND_VOICE
+                } else if (STYLE == ThemeStyle.LIGHT) {
+                    message.type = LIGHT_SEND_VOICE
                 }
                 message.user = DefaultUser("0", "user1", "R.drawable.ironman")
                 message.setMediaFilePath(voiceFile.path)
@@ -330,10 +308,13 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
             override fun onTakePictureCompleted(photoPath: String) {
                 val message = MyMessage("", IMessage.MessageType.SEND_IMAGE.ordinal)
+                if (STYLE == ThemeStyle.BLACK) {
+                    message.type = BLACK_SEND_IMAGE
+                }
                 message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
                 message.setMediaFilePath(photoPath)
                 message.user = DefaultUser("0", "user1", "R.drawable.ironman")
-                activity.runOnUiThread( Runnable {
+                activity.runOnUiThread(Runnable {
                     mAdapter!!.addToStart(message, true)
                 })
             }
@@ -356,13 +337,8 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         }
         mBinding!!.receiveMsgBtn.setOnClickListener {
             val message = MyMessage("Test", IMessage.MessageType.RECEIVE_TEXT.ordinal)
-            when (STYLE) {
-                ThemeStyle.BLACK -> {
-                    message.type = BLACK_RECEIVE_TXT
-                }
-                ThemeStyle.LIGHT -> {
-                    message.type = LIGHT_RECEIVE_TXT
-                }
+            if (STYLE == ThemeStyle.BLACK) {
+                message.type = BLACK_RECEIVE_TXT
             }
             message.user = DefaultUser("1", "user2", "R.drawable.deadpool")
             message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
@@ -378,7 +354,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         when (motionEvent?.action) {
             MotionEvent.ACTION_DOWN -> {
                 val chatInputView = mBinding!!.chatInput
-                Log.i("ThemeFragment","on touch event ")
+                Log.i("ThemeFragment", "on touch event ")
                 if (view?.id == chatInputView.id) {
                     if (chatInputView.menuState == View.VISIBLE && !chatInputView.softInputState) {
                         chatInputView.dismissMenuAndResetSoftMode()
@@ -410,5 +386,51 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         return false
     }
 
+    fun configBlackTheme() {
+        val ptrLayout = mBinding!!.pullToRefreshLayout
+        val msgList = mBinding!!.msgList
+        ptrLayout.setBackgroundColor(Color.parseColor("#F9FAFC"))
+        msgList.setSendBubbleDrawable(R.drawable.black_send_bubble)
+        msgList.setReceiveBubbleDrawable(R.drawable.black_receive_bubble)
+        msgList.setSendBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+        msgList.setSendBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+        msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+        msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+        val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
+        val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
+        val blackSendVoiceConfig = CustomMsgConfig(BLACK_SEND_VOICE, R.layout.item_msglist_black_send_voice, true, BlackVoiceViewHolder::class.java)
+        val blackReceiveVoiceConfig = CustomMsgConfig(BLACK_RECEIVE_VOICE, R.layout.item_msglist_black_receive_txt, false, BlackVoiceViewHolder::class.java)
+        val blackSendImageConfig = CustomMsgConfig(BLACK_SEND_IMAGE, R.layout.item_msglist_black_send_image, true, BlackImageViewHolder::class.java)
+        val blackReceiveImageConfig = CustomMsgConfig(BLACK_RECEIVE_IMAGE, R.layout.item_msglist_black_receive_image, false, BlackImageViewHolder::class.java)
+        mAdapter!!.addCustomMsgType(BLACK_SEND_TXT, blackSendTxtConfig)
+        mAdapter!!.addCustomMsgType(BLACK_RECEIVE_TXT, blackReceiveTxtConfig)
+        mAdapter!!.addCustomMsgType(BLACK_SEND_VOICE, blackSendVoiceConfig)
+        mAdapter!!.addCustomMsgType(BLACK_RECEIVE_VOICE, blackReceiveVoiceConfig)
+        mAdapter!!.addCustomMsgType(BLACK_SEND_IMAGE, blackSendImageConfig)
+        mAdapter!!.addCustomMsgType(BLACK_RECEIVE_IMAGE, blackReceiveImageConfig)
+    }
+
+    fun configLightTheme() {
+        val ptrLayout = mBinding!!.pullToRefreshLayout
+        val msgList = mBinding!!.msgList
+        ptrLayout.setBackgroundColor(Color.WHITE)
+        msgList.setSendBubbleDrawable(R.drawable.light_send_bubble)
+        msgList.setReceiveBubbleDrawable(R.drawable.light_receive_bubble)
+        msgList.setSendBubbleTextColor(activity.resources.getColor(R.color.light_send_text_color))
+        msgList.setReceiveBubbleTextColor(activity.resources.getColor(R.color.light_receive_text_color))
+        msgList.setSendBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+        msgList.setSendBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+        msgList.setReceiveBubblePaddingLeft(DisplayUtil.dp2px(activity, 10f))
+        msgList.setReceiveBubblePaddingRight(DisplayUtil.dp2px(activity, 10f))
+        msgList.setSendBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
+        msgList.setSendBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
+        msgList.setReceiveBubblePaddingTop(DisplayUtil.dp2px(activity, 8f))
+        msgList.setReceiveBubblePaddingBottom(DisplayUtil.dp2px(activity, 8f))
+        msgList.setSendVoiceDrawable(R.drawable.light_send_voice_bg)
+        val lightSendVoiceConfig = CustomMsgConfig(LIGHT_SEND_VOICE, R.layout.item_msglist_light_send_voice, true, LightVoiceViewHolder::class.java)
+        val lightReceiveVoiceConfig = CustomMsgConfig(LIGHT_RECEIVE_VOICE, R.layout.item_msglist_light_receive_voice, false, LightVoiceViewHolder::class.java)
+        mAdapter!!.addCustomMsgType(LIGHT_SEND_VOICE, lightSendVoiceConfig)
+        mAdapter!!.addCustomMsgType(LIGHT_RECEIVE_VOICE, lightReceiveVoiceConfig)
+    }
 
 }
