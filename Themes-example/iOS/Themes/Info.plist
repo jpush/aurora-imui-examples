@@ -2,6 +2,12 @@
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0">
 <dict>
+	<key>NSPhotoLibraryUsageDescription</key>
+	<string>需要在 Info.plist 中添加相册权限</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>需要在 Info.plist 中添加麦克风权限</string>
+	<key>NSCameraUsageDescription</key>
+	<string>需要在 Info.plist 中添加摄像头权限</string>
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleExecutable</key>
