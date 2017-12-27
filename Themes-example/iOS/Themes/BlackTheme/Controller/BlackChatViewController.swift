@@ -19,9 +19,21 @@ class BlackChatViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    self.navigationController?.navigationBar.isTranslucent = false
     IMUIMessageCellLayout.bubbleOffsetToAvatar = UIOffset(horizontal: -40 , vertical: 46)
+    IMUITextMessageContentView.inComingTextColor = UIColor.white
+    IMUITextMessageContentView.outGoingTextColor = UIColor(netHex: 0x7587A8)
+    self.setThemeColor(UIColor(netHex: 0xF9FAFC))
     self.chatInputView.inputViewDelegate = self
     self.messageList.delegate = self
+  }
+  
+  func setThemeColor(_ color: UIColor) {
+    messageList.messageCollectionView.backgroundColor = color
+    for view in chatInputView.subviews {
+      view.backgroundColor = color
+    }
+    chatInputView.featureSelectorView.featureListCollectionView.backgroundColor = color
   }
   
   override func didReceiveMemoryWarning() {
@@ -134,7 +146,7 @@ extension BlackChatViewController: IMUIMessageMessageCollectionViewDelegate {
     
   }
   
-  func messageList(_ willBeginDragging: UICollectionView) {
+  func messageCollectionView(_ willBeginDragging: UICollectionView) {
     self.chatInputView.hideFeatureView()
   }
   

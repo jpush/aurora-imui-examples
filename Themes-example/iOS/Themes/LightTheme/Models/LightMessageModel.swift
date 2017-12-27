@@ -20,8 +20,16 @@ class LightMessageModel: IMUIMessageModel {
   
   
   override var resizableBubbleImage: UIImage {
-    // return defoult message bubble
-    return super.resizableBubbleImage
+    var bubbleImg: UIImage?
+    if isOutGoing {
+      bubbleImg = UIImage(named: "outGoing_light_bubble")
+      bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(14, 14, 14, 14), resizingMode: .tile)
+    } else {
+      bubbleImg = UIImage(named: "inComing_light_bubble")
+      bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(14, 14, 14, 14), resizingMode: .tile)
+    }
+    
+    return bubbleImg!
   }
   
   init(msgId: String, messageStatus: IMUIMessageStatus, fromUser: MyUser, isOutGoing: Bool, date: Date, type: String, text: String, mediaPath: String, layout: IMUIMessageCellLayoutProtocol, duration: CGFloat?) {
@@ -44,7 +52,7 @@ class LightMessageModel: IMUIMessageModel {
   convenience init(voicePath: String, duration: CGFloat, isOutGoing: Bool) {
     let myLayout = LightMessageCellLayout(isOutGoingMessage: isOutGoing,
                                        isNeedShowTime: false,
-                                       bubbleContentSize: CGSize(width: 80, height: 37), bubbleContentInsets: UIEdgeInsets.zero, type: "voice")
+                                       bubbleContentSize: CGSize(width: 80, height: 46), bubbleContentInsets: UIEdgeInsets.zero, type: "voice")
     let msgId = "\(NSDate().timeIntervalSince1970 * 1000)"
     self.init(msgId: msgId, messageStatus: .sending, fromUser: MyUser(), isOutGoing: isOutGoing, date: Date(), type: "voice", text: "", mediaPath: voicePath, layout:  myLayout, duration: duration)
   }
@@ -112,10 +120,16 @@ class LightMessageCellLayout: IMUIMessageCellLayout {
   override public var bubbleContentInset: UIEdgeInsets {
     if type != "text" { return UIEdgeInsets.zero }
     if isOutGoingMessage {
-      return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 15)
+      return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     } else {
-      return UIEdgeInsets(top: 10, left: 15, bottom: 10, right: 10)
+      return UIEdgeInsets(top: 10, left: 10, bottom: 10, right: 10)
     }
+  }
+  
+  override public var avatarFrame: CGRect {
+    var rect = super.avatarFrame
+    rect.size.width = 0
+    return rect
   }
   
   override public var bubbleContentView: IMUIMessageContentViewProtocol {
@@ -128,7 +142,7 @@ class LightMessageCellLayout: IMUIMessageCellLayout {
     }
     
     if type == "voice" {
-      return IMUIVoiceMessageContentView()
+      return VoiceLightContentView()
     }
     
     if type == "video" {
