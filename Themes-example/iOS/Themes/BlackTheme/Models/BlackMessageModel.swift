@@ -71,7 +71,7 @@ class BlackMessageModel: IMUIMessageModel {
   convenience init(voicePath: String, duration: CGFloat, isOutGoing: Bool, isContinuous: Bool = false) {
     let myLayout = BlackMessageCellLayout(isOutGoingMessage: isOutGoing,
                                              isNeedShowTime: false,
-                                          bubbleContentSize: CGSize(width: 80, height: 37),
+                                          bubbleContentSize: CGSize(width: 160, height: 46),
                                           bubbleContentInsets: UIEdgeInsets.zero,
                                           type: "voice",
                                           isContinuous: isContinuous)
@@ -146,10 +146,10 @@ class BlackMessageModel: IMUIMessageModel {
     var bubbleImg: UIImage?
     if isOutGoing {
       bubbleImg = UIImage(named: "outGoing_black_bubble")
-      bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(24, 24, 24, 24), resizingMode: .tile)
+      bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(14, 14, 14, 14), resizingMode: .tile)
     } else {
       bubbleImg = UIImage(named: "inComing_black_bubble")
-      bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(24, 24, 24, 24), resizingMode: .tile)
+      bubbleImg = bubbleImg?.resizableImage(withCapInsets: UIEdgeInsetsMake(14, 14, 14, 14), resizingMode: .tile)
     }
     
     return bubbleImg!
@@ -218,7 +218,7 @@ class BlackMessageCellLayout: IMUIMessageCellLayout {
     }
     
     if type == "voice" {
-      return IMUIVoiceMessageContentView()
+      return VoiceWaveContentView()
     }
     
     if type == "video" {
