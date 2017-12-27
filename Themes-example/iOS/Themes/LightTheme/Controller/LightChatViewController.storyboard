@@ -4,7 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
+        <deployment version="2320" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,16 +29,16 @@
                         </subviews>
                         <color key="backgroundColor" red="0.81378847359999995" green="0.86015254259999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="pQr-Po-3j6" firstAttribute="leading" secondItem="tqR-7b-gDU" secondAttribute="leading" id="Ccc-A2-awD"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="leading" secondItem="WAG-tF-MJ0" secondAttribute="leading" id="Ccc-A2-awD"/>
                             <constraint firstItem="pQr-Po-3j6" firstAttribute="top" secondItem="ldj-H8-K42" secondAttribute="bottom" id="HOQ-2K-nYl"/>
-                            <constraint firstItem="ldj-H8-K42" firstAttribute="trailing" secondItem="tqR-7b-gDU" secondAttribute="trailing" id="IfQ-kt-sDV"/>
-                            <constraint firstItem="ldj-H8-K42" firstAttribute="leading" secondItem="tqR-7b-gDU" secondAttribute="leading" id="OCZ-8e-Aka"/>
+                            <constraint firstItem="ldj-H8-K42" firstAttribute="trailing" secondItem="WAG-tF-MJ0" secondAttribute="trailing" id="IfQ-kt-sDV"/>
+                            <constraint firstItem="ldj-H8-K42" firstAttribute="leading" secondItem="WAG-tF-MJ0" secondAttribute="leading" id="OCZ-8e-Aka"/>
                             <constraint firstItem="pQr-Po-3j6" firstAttribute="top" secondItem="ldj-H8-K42" secondAttribute="bottom" id="OvK-Ry-FkF"/>
                             <constraint firstItem="ldj-H8-K42" firstAttribute="top" secondItem="aWJ-V9-R57" secondAttribute="top" id="hOo-jo-gBt"/>
-                            <constraint firstItem="pQr-Po-3j6" firstAttribute="bottom" secondItem="tqR-7b-gDU" secondAttribute="bottom" id="ohX-2f-xRB"/>
-                            <constraint firstItem="pQr-Po-3j6" firstAttribute="trailing" secondItem="tqR-7b-gDU" secondAttribute="trailing" id="tFK-lZ-Hjf"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="bottom" secondItem="WAG-tF-MJ0" secondAttribute="bottom" id="ohX-2f-xRB"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="trailing" secondItem="WAG-tF-MJ0" secondAttribute="trailing" id="tFK-lZ-Hjf"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="tqR-7b-gDU"/>
+                        <viewLayoutGuide key="safeArea" id="WAG-tF-MJ0"/>
                     </view>
                     <connections>
                         <outlet property="chatInputView" destination="pQr-Po-3j6" id="fI0-9D-Gcw"/>

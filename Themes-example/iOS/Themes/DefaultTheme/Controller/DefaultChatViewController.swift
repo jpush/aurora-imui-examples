@@ -19,6 +19,10 @@ class DefaultChatViewController: UIViewController {
   
   override func viewDidLoad() {
     super.viewDidLoad()
+    IMUIMessageCellLayout.bubbleOffsetToAvatar = UIOffset(horizontal: 8 , vertical: 0)
+    IMUITextMessageContentView.inComingTextColor = UIColor.white
+    IMUITextMessageContentView.outGoingTextColor = UIColor(netHex: 0x7587A8)
+    
     self.chatInputView.inputViewDelegate = self
     self.messageList.delegate = self
   }
@@ -131,7 +135,7 @@ extension DefaultChatViewController: IMUIMessageMessageCollectionViewDelegate {
     
   }
   
-  func messageList(_ willBeginDragging: UICollectionView) {
+  func messageCollectionView(_ willBeginDragging: UICollectionView) {
     self.chatInputView.hideFeatureView()
   }
   
