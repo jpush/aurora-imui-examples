@@ -35,7 +35,6 @@ import cn.jiguang.imuisample.themes.black.BlackVoiceViewHolder
 import cn.jiguang.imuisample.themes.light.LightVoiceViewHolder
 import cn.jiguang.imuisample.util.DisplayUtil
 import com.bumptech.glide.Glide
-import com.bumptech.glide.request.target.Target
 import pub.devrel.easypermissions.EasyPermissions
 import java.io.File
 import java.text.SimpleDateFormat
@@ -404,6 +403,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val ptrLayout = mBinding!!.pullToRefreshLayout
         val msgList = mBinding!!.msgList
         val chatInput = mBinding!!.chatInput
+        chatInput.style.sendBtnPressedIcon = R.drawable.black_menuitem_send_pres
         ptrLayout.setBackgroundColor(Color.parseColor("#F9FAFC"))
         msgList.setSendBubbleDrawable(R.drawable.black_send_bubble)
         msgList.setReceiveBubbleDrawable(R.drawable.black_receive_bubble)
@@ -428,6 +428,8 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
     private fun configLightTheme() {
         val ptrLayout = mBinding!!.pullToRefreshLayout
         val msgList = mBinding!!.msgList
+        val chatInput = mBinding!!.chatInput
+        chatInput.style.sendBtnPressedIcon = R.drawable.light_menuitem_send_pres
         ptrLayout.setBackgroundColor(Color.WHITE)
         msgList.setSendBubbleDrawable(R.drawable.light_send_bubble)
         msgList.setReceiveBubbleDrawable(R.drawable.light_receive_bubble)
@@ -452,8 +454,16 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val chatInput = mBinding!!.chatInput
         when (flag) {
             1 -> {
-                if (STYLE == ThemeStyle.BLACK) {
-                    chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_voice_pressed))
+                when (STYLE) {
+                    ThemeStyle.BLACK -> {
+                        chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_voice_pres))
+                    }
+                    ThemeStyle.LIGHT -> {
+                        chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_voice_pres))
+                    }
+                    else -> {
+                        chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_voice_pres))
+                    }
                 }
                 chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
                 chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
@@ -461,6 +471,51 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
             2 -> {
                 chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                when (STYLE) {
+                    ThemeStyle.BLACK -> {
+                        chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_photo_pres))
+                    }
+                    ThemeStyle.LIGHT -> {
+                        chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_photo_pres))
+                    }
+                    else -> {
+                        chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_photo_pres))
+                    }
+                }
+                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+            }
+            3 -> {
+                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                when (STYLE) {
+                    ThemeStyle.BLACK -> {
+                        chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_camera_pres))
+                    }
+                    ThemeStyle.LIGHT -> {
+                        chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_camera_pres))
+                    }
+                    else -> {
+                        chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_camera_pres))
+                    }
+                }
+                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+            }
+            4 -> {
+                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                when (STYLE) {
+                    ThemeStyle.BLACK -> {
+                        chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_emoji_pres))
+                    }
+                    ThemeStyle.LIGHT -> {
+                        chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_emoji_pres))
+                    }
+                    else -> {
+                        chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_emoji_pres))
+                    }
+                }
             }
             else -> {
                 chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
@@ -469,7 +524,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
             }
         }
-
     }
 
 }
