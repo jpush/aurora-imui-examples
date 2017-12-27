@@ -27,33 +27,31 @@ import java.util.*
 open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSender: Boolean)
     : BaseMessageViewHolder<MESSAGE>(itemView), MsgListAdapter.DefaultMessageViewHolder {
 
-    var mMsgTv: TextView? = null
+    private var mMsgTv: TextView? = null
     private var mDateTv: TextView? = null
     private var mDisplayNameTv: TextView? = null
     private var mAvatarIv: RoundImageView? = null
     private var mResendIb: ImageButton? = null
     private var mSendingPb: ProgressBar? = null
-    private var mVoiceAnimIv: ImageView? = null
+    private var mVoiceAnim: BlackPlayVoiceView? = null
     private var mLengthTv: TextView? = null
-    private var mController: ViewHolderController? = null
-    private var mSetData = false
-    private var mVoiceAnimation: AnimationDrawable? = null
-    private var mFIS: FileInputStream? = null
+    private var mReadStatusIv: ImageView? = null
 
     init {
         mMsgTv = itemView.findViewById(R.id.aurora_tv_msgitem_message)
         mDateTv = itemView.findViewById(R.id.aurora_tv_msgitem_date)
+        mVoiceAnim = itemView.findViewById(R.id.black_play_voice_view)
         if (mIsSender) {
             mDisplayNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_sender_display_name)
             mSendingPb = itemView.findViewById(R.id.aurora_pb_msgitem_sending)
             mResendIb = itemView.findViewById(R.id.aurora_ib_msgitem_resend)
         } else {
             mDisplayNameTv = itemView.findViewById(R.id.aurora_tv_msgitem_receiver_display_name)
+            mReadStatusIv = itemView.findViewById(R.id.aurora_iv_msgitem_read_status)
         }
         mLengthTv = itemView.findViewById(R.id.aurora_tv_voice_length)
         mAvatarIv = itemView.findViewById(R.id.aurora_iv_msgitem_avatar)
-        mVoiceAnimIv = itemView.findViewById(R.id.aurora_iv_msgitem_voice_anim)
-        mController = ViewHolderController.getInstance()
+
     }
 
 
@@ -98,10 +96,12 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
         val lengthStr = duration.toString() + mContext.getString(cn.jiguang.imui.R.string.aurora_symbol_second)
         val width = (-0.04 * duration.toDouble() * duration.toDouble() + 4.526 * duration + 75.214).toInt()
         mMsgTv!!.width = (width * mDensity).toInt()
-        mLengthTv!!.setText(lengthStr)
+        mLengthTv!!.text = lengthStr
         if (mDisplayNameTv!!.visibility == View.VISIBLE) {
             mDisplayNameTv!!.text = message.fromUser.displayName
         }
+        mVoiceAnim!!.setDirection(mIsSender)
+        mVoiceAnim!!.setMediaSource(message.mediaFilePath, duration.toInt())
         if (mIsSender) {
             when (message.messageStatus) {
                 IMessage.MessageStatus.SEND_GOING -> {
@@ -132,7 +132,10 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
                         }
                     })
                 }
-                IMessage.MessageStatus.RECEIVE_SUCCEED -> mResendIb!!.visibility = View.GONE
+                IMessage.MessageStatus.RECEIVE_SUCCEED -> {
+                    mResendIb!!.visibility = View.GONE
+                    mReadStatusIv!!.visibility = View.VISIBLE
+                }
             }
         }
 
@@ -140,36 +143,13 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
             if (mMsgClickListener != null) {
                 mMsgClickListener.onMessageClick(message)
             }
-
-            mController!!.notifyAnimStop()
-            mController!!.message = message
-            if (mIsSender) {
-                mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_bg)
+            if (mVoiceAnim!!.isPlaying()) {
+                mVoiceAnim!!.stop()
             } else {
-                mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_bg)
+                mVoiceAnim!!.start()
             }
-            mVoiceAnimation = mVoiceAnimIv!!.drawable as AnimationDrawable
-            mController!!.addView(adapterPosition, mVoiceAnimIv)
-            // If audio is playing, pause
-            Log.e("VoiceViewHolder", "MediaPlayer playing " + mMediaPlayer.isPlaying + "now position " + adapterPosition)
-            if (mController!!.lastPlayPosition == adapterPosition) {
-                if (mMediaPlayer.isPlaying) {
-                    pauseVoice()
-                    mVoiceAnimation!!.stop()
-                    if (mIsSender) {
-                        mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_3)
-                    } else {
-                        mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_3)
-                    }
-                } else if (mSetData) {
-                    mMediaPlayer.start()
-                    mVoiceAnimation!!.start()
-                } else {
-                    playVoice(adapterPosition, message)
-                }
-                // Start playing audio
-            } else {
-                playVoice(adapterPosition, message)
+            if (!mIsSender && mReadStatusIv!!.visibility == View.VISIBLE) {
+                mReadStatusIv!!.visibility = View.GONE
             }
         })
 
@@ -191,52 +171,10 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
         })
     }
 
-    fun playVoice(position: Int, message: MESSAGE) {
-        mController!!.setLastPlayPosition(position, mIsSender)
-        try {
-            mMediaPlayer.reset()
-            mFIS = FileInputStream(message.mediaFilePath)
-            mMediaPlayer.setDataSource(mFIS!!.fd)
-            mMediaPlayer.setAudioStreamType(AudioManager.STREAM_VOICE_CALL)
-            mMediaPlayer.prepare()
-            mMediaPlayer.setOnPreparedListener { mp ->
-                mVoiceAnimation!!.start()
-                mp.start()
-            }
-            mMediaPlayer.setOnCompletionListener { mp ->
-                mVoiceAnimation!!.stop()
-                mp.reset()
-                mSetData = false
-                if (mIsSender) {
-                    mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_3)
-                } else {
-                    mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_3)
-                }
-            }
-        } catch (e: IOException) {
-            e.printStackTrace()
-        } finally {
-            try {
-                if (mFIS != null) {
-                    mFIS!!.close()
-                }
-            } catch (e: IOException) {
-                e.printStackTrace()
-            }
-
-        }
-    }
-
-    private fun pauseVoice() {
-        mMediaPlayer.pause()
-        mSetData = true
-    }
-
     override fun applyStyle(style: MessageListStyle) {
         mDateTv!!.textSize = style.dateTextSize
         mDateTv!!.setTextColor(style.dateTextColor)
         if (mIsSender) {
-            mVoiceAnimIv!!.setImageResource(R.drawable.black_send_voice_3)
             mMsgTv!!.background = style.sendBubbleDrawable
             if (style.sendingProgressDrawable != null) {
                 mSendingPb!!.progressDrawable = style.sendingProgressDrawable
@@ -250,7 +188,6 @@ open class BlackVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var 
                 mDisplayNameTv!!.visibility = View.GONE
             }
         } else {
-            mVoiceAnimIv!!.setImageResource(R.drawable.black_receive_voice_3)
             mMsgTv!!.background = style.receiveBubbleDrawable
             if (style.showReceiverDisplayName == 1) {
                 mDisplayNameTv!!.visibility = View.VISIBLE

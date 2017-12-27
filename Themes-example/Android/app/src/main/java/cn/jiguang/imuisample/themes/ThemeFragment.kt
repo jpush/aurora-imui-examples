@@ -174,6 +174,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         })
         chatInput.setMenuClickListener(object : OnMenuClickListener {
             override fun switchToMicrophoneMode(): Boolean {
+                setChecked(1)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -185,12 +186,21 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 return true
             }
 
-            override fun switchToEmojiMode(): Boolean {
+            override fun switchToGalleryMode(): Boolean {
+                setChecked(2)
                 scrollToBottom()
+                val params = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
+
+                if (!EasyPermissions.hasPermissions(activity, *params)) {
+                    EasyPermissions.requestPermissions(activity,
+                            resources.getString(R.string.rationale_photo),
+                            RC_PHOTO, *params)
+                }
                 return true
             }
 
             override fun switchToCameraMode(): Boolean {
+                setChecked(3)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
                         Manifest.permission.RECORD_AUDIO)
@@ -200,6 +210,12 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                             resources.getString(R.string.rationale_camera),
                             RC_CAMERA, *params)
                 }
+                return true
+            }
+
+            override fun switchToEmojiMode(): Boolean {
+                setChecked(4)
+                scrollToBottom()
                 return true
             }
 
@@ -245,18 +261,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
                     activity.runOnUiThread({ mAdapter!!.addToStart(message, true) })
                 }
-            }
-
-            override fun switchToGalleryMode(): Boolean {
-                scrollToBottom()
-                val params = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
-
-                if (!EasyPermissions.hasPermissions(activity, *params)) {
-                    EasyPermissions.requestPermissions(activity,
-                            resources.getString(R.string.rationale_photo),
-                            RC_PHOTO, *params)
-                }
-                return true
             }
 
         })
@@ -324,6 +328,10 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
         })
 
+        chatInput.setOnClickEditTextListener {
+            setChecked(0)
+        }
+
         mAdapter!!.setOnMsgClickListener {
             // do something
         }
@@ -343,6 +351,11 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             message.user = DefaultUser("1", "user2", "R.drawable.deadpool")
             message.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
             mAdapter!!.addToStart(message, true)
+//            val voiceMsg = MyMessage("", BLACK_RECEIVE_VOICE)
+//            voiceMsg.setMediaFilePath("/storage/emulated/0/voice/2017-12-27-032403.m4a")
+//            voiceMsg.duration = 3
+//            voiceMsg.user = DefaultUser("1", "user2", "R.drawable.deadpool")
+//            mAdapter!!.addToStart(voiceMsg, true)
         }
     }
 
@@ -366,6 +379,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 if (mBinding!!.chatInput.menuState == View.VISIBLE) {
                     mBinding!!.chatInput.dismissMenuLayout()
                 }
+                setChecked(0)
                 try {
                     val v = activity.currentFocus;
                     if (mImm != null && v != null) {
@@ -386,9 +400,10 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         return false
     }
 
-    fun configBlackTheme() {
+    private fun configBlackTheme() {
         val ptrLayout = mBinding!!.pullToRefreshLayout
         val msgList = mBinding!!.msgList
+        val chatInput = mBinding!!.chatInput
         ptrLayout.setBackgroundColor(Color.parseColor("#F9FAFC"))
         msgList.setSendBubbleDrawable(R.drawable.black_send_bubble)
         msgList.setReceiveBubbleDrawable(R.drawable.black_receive_bubble)
@@ -399,7 +414,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val blackSendTxtConfig = CustomMsgConfig(BLACK_SEND_TXT, R.layout.item_msglist_black_send_txt, true, BlackTxtViewHolder::class.java)
         val blackReceiveTxtConfig = CustomMsgConfig(BLACK_RECEIVE_TXT, R.layout.item_msglist_black_receive_txt, false, BlackTxtViewHolder::class.java)
         val blackSendVoiceConfig = CustomMsgConfig(BLACK_SEND_VOICE, R.layout.item_msglist_black_send_voice, true, BlackVoiceViewHolder::class.java)
-        val blackReceiveVoiceConfig = CustomMsgConfig(BLACK_RECEIVE_VOICE, R.layout.item_msglist_black_receive_txt, false, BlackVoiceViewHolder::class.java)
+        val blackReceiveVoiceConfig = CustomMsgConfig(BLACK_RECEIVE_VOICE, R.layout.item_msglist_black_receive_voice, false, BlackVoiceViewHolder::class.java)
         val blackSendImageConfig = CustomMsgConfig(BLACK_SEND_IMAGE, R.layout.item_msglist_black_send_image, true, BlackImageViewHolder::class.java)
         val blackReceiveImageConfig = CustomMsgConfig(BLACK_RECEIVE_IMAGE, R.layout.item_msglist_black_receive_image, false, BlackImageViewHolder::class.java)
         mAdapter!!.addCustomMsgType(BLACK_SEND_TXT, blackSendTxtConfig)
@@ -410,7 +425,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         mAdapter!!.addCustomMsgType(BLACK_RECEIVE_IMAGE, blackReceiveImageConfig)
     }
 
-    fun configLightTheme() {
+    private fun configLightTheme() {
         val ptrLayout = mBinding!!.pullToRefreshLayout
         val msgList = mBinding!!.msgList
         ptrLayout.setBackgroundColor(Color.WHITE)
@@ -431,6 +446,30 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val lightReceiveVoiceConfig = CustomMsgConfig(LIGHT_RECEIVE_VOICE, R.layout.item_msglist_light_receive_voice, false, LightVoiceViewHolder::class.java)
         mAdapter!!.addCustomMsgType(LIGHT_SEND_VOICE, lightSendVoiceConfig)
         mAdapter!!.addCustomMsgType(LIGHT_RECEIVE_VOICE, lightReceiveVoiceConfig)
+    }
+
+    private fun setChecked(flag: Int) {
+        val chatInput = mBinding!!.chatInput
+        when (flag) {
+            1 -> {
+                if (STYLE == ThemeStyle.BLACK) {
+                    chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_voice_pressed))
+                }
+                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+            }
+            2 -> {
+                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+            }
+            else -> {
+                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+            }
+        }
+
     }
 
 }
