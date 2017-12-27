@@ -4,7 +4,7 @@
         <adaptation id="fullscreen"/>
     </device>
     <dependencies>
-        <deployment identifier="iOS"/>
+        <deployment version="2320" identifier="iOS"/>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
@@ -29,16 +29,16 @@
                         </subviews>
                         <color key="backgroundColor" red="0.079452811279999994" green="1" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
+                            <constraint firstItem="aCc-i6-LgC" firstAttribute="bottom" secondItem="rk9-b6-66h" secondAttribute="bottom" id="8Fj-af-msg"/>
                             <constraint firstItem="rk9-b6-66h" firstAttribute="top" secondItem="bS3-Jg-Vvf" secondAttribute="bottom" id="8hW-0I-TOR"/>
-                            <constraint firstItem="bS3-Jg-Vvf" firstAttribute="trailing" secondItem="ddq-iI-3kY" secondAttribute="trailing" id="9SB-n8-kVc"/>
-                            <constraint firstItem="rk9-b6-66h" firstAttribute="leading" secondItem="ddq-iI-3kY" secondAttribute="leading" id="I2V-wd-IEM"/>
-                            <constraint firstItem="rk9-b6-66h" firstAttribute="bottom" secondItem="ddq-iI-3kY" secondAttribute="bottom" id="IsC-ie-uNT"/>
+                            <constraint firstItem="bS3-Jg-Vvf" firstAttribute="trailing" secondItem="aCc-i6-LgC" secondAttribute="trailing" id="9SB-n8-kVc"/>
+                            <constraint firstItem="rk9-b6-66h" firstAttribute="trailing" secondItem="aCc-i6-LgC" secondAttribute="trailing" id="R6z-jd-UFF"/>
                             <constraint firstItem="bS3-Jg-Vvf" firstAttribute="top" secondItem="y1p-Dk-5DU" secondAttribute="top" id="Urr-Bs-kbL"/>
-                            <constraint firstItem="bS3-Jg-Vvf" firstAttribute="leading" secondItem="ddq-iI-3kY" secondAttribute="leading" id="cuk-xt-bnE"/>
+                            <constraint firstItem="bS3-Jg-Vvf" firstAttribute="leading" secondItem="aCc-i6-LgC" secondAttribute="leading" id="cuk-xt-bnE"/>
                             <constraint firstItem="rk9-b6-66h" firstAttribute="top" secondItem="bS3-Jg-Vvf" secondAttribute="bottom" id="lki-Le-MIt"/>
-                            <constraint firstItem="rk9-b6-66h" firstAttribute="trailing" secondItem="ddq-iI-3kY" secondAttribute="trailing" id="zRo-Ds-Vu3"/>
+                            <constraint firstItem="rk9-b6-66h" firstAttribute="leading" secondItem="aCc-i6-LgC" secondAttribute="leading" id="mRk-5Y-3ky"/>
                         </constraints>
-                        <viewLayoutGuide key="safeArea" id="ddq-iI-3kY"/>
+                        <viewLayoutGuide key="safeArea" id="aCc-i6-LgC"/>
                     </view>
                     <connections>
                         <outlet property="chatInputView" destination="rk9-b6-66h" id="OAH-28-cdc"/>
@@ -47,7 +47,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7AL-CJ-683" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="21.600000000000001" y="138.98050974512745"/>
+            <point key="canvasLocation" x="20" y="138.0809595202399"/>
         </scene>
     </scenes>
 </document>

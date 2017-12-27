@@ -20,7 +20,20 @@ class LightChatViewController: UIViewController {
   override func viewDidLoad() {
     super.viewDidLoad()
     self.chatInputView.inputViewDelegate = self
+    self.navigationController?.navigationBar.isTranslucent = false
+    IMUIMessageCellLayout.bubbleOffsetToAvatar = UIOffset(horizontal: 8 , vertical: 0)
+    IMUITextMessageContentView.inComingTextColor = UIColor(netHex: 0x8D8E8E)
+    IMUITextMessageContentView.outGoingTextColor = UIColor.white
+    self.setThemeColor(UIColor(netHex: 0xF4F5FE))
     self.messageList.delegate = self
+  }
+  
+  func setThemeColor(_ color: UIColor) {
+    messageList.messageCollectionView.backgroundColor = color
+    for view in chatInputView.subviews {
+      view.backgroundColor = color
+    }
+    chatInputView.featureSelectorView.featureListCollectionView.backgroundColor = color
   }
   
   override func didReceiveMemoryWarning() {
@@ -131,7 +144,7 @@ extension LightChatViewController: IMUIMessageMessageCollectionViewDelegate {
     
   }
   
-  func messageList(_ willBeginDragging: UICollectionView) {
+  func messageCollectionView(_ willBeginDragging: UICollectionView) {
     self.chatInputView.hideFeatureView()
   }
   
@@ -142,6 +155,5 @@ extension LightChatViewController: IMUIMessageMessageCollectionViewDelegate {
     toast.dismiss(withClickedButtonIndex: 0, animated: true)
   }
 }
-
 
 
