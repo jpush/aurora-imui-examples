@@ -46,6 +46,9 @@
                                 <rect key="frame" x="162" y="318" width="53" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <state key="normal" title="Minimal"/>
+                                <connections>
+                                    <segue destination="8hC-ib-zyJ" kind="push" id="bN3-e4-HC0"/>
+                                </connections>
                             </button>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
@@ -118,6 +121,16 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="2fg-Yh-epA" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="1374" y="870"/>
+        </scene>
+        <!--MinimalChatViewController-->
+        <scene sceneID="WFi-gX-91M">
+            <objects>
+                <viewControllerPlaceholder storyboardIdentifier="MinimalChatViewController" storyboardName="MinimalChatViewController" referencedIdentifier="MinimalChatViewController" id="8hC-ib-zyJ" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="a79-Q7-sbq"/>
+                </viewControllerPlaceholder>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Jtk-vL-d8K" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1353" y="921"/>
         </scene>
     </scenes>
 </document>
