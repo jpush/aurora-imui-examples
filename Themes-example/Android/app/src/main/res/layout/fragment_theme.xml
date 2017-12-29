@@ -16,6 +16,10 @@
         android:layout_height="match_parent"
         tools:context=".themes.ThemeFragment">
 
+        <include
+            android:id="@+id/chat_title_bar"
+            layout="@layout/chat_title_bar"/>
+
         <cn.jiguang.imui.chatinput.ChatInputView
             android:id="@+id/chat_input"
             android:layout_width="match_parent"
@@ -41,7 +45,8 @@
             app:PtrResistance="1.2"
             android:background="#f3f3f3"
             android:paddingBottom="10dp"
-            android:layout_above="@+id/chat_input">
+            android:layout_above="@+id/chat_input"
+            android:layout_below="@+id/chat_title_bar">
 
             <cn.jiguang.imui.messages.MessageList
                 android:id="@+id/msg_list"

@@ -25,23 +25,22 @@ android {
 }
 
 dependencies {
-    implementation fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
     compile 'com.android.support:appcompat-v7:26.1.0'
     implementation 'com.android.support.constraint:constraint-layout:1.0.2'
-    implementation 'cn.jiguang.imui:messagelist:0.5.7'
-    implementation 'cn.jiguang.imui:chatinput:0.6.0'
+    implementation project(':messagelist')
+    implementation project(':chatinput')
     testImplementation 'junit:junit:4.12'
     kapt 'com.android.databinding:compiler:3.0.1'
     androidTestImplementation 'com.android.support.test:runner:1.0.1'
     androidTestImplementation 'com.android.support.test.espresso:espresso-core:3.0.1'
-    compile "org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.10"
+    compile 'org.jetbrains.kotlin:kotlin-stdlib-jre7:1.2.10'
     implementation 'pub.devrel:easypermissions:0.4.0'
     implementation 'com.google.android.exoplayer:exoplayer-core:2.6.0'
-
     compile "android.arch.persistence.room:runtime:$rootProject.roomVersion"
     annotationProcessor "android.arch.persistence.room:compiler:$rootProject.roomVersion"
     kapt "android.arch.persistence.room:compiler:$rootProject.roomVersion"
-    implementation "android.arch.lifecycle:extensions:1.0.0"
+    implementation 'android.arch.lifecycle:extensions:1.0.0'
     annotationProcessor "android.arch.lifecycle:compiler:$rootProject.archLifecycleVersion"
 }
 repositories {

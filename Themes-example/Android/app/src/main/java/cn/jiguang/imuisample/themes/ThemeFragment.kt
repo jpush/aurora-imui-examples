@@ -13,6 +13,9 @@ import android.view.*
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.RelativeLayout
+import android.widget.TextView
+import cn.jiguang.imui.chatinput.ChatInputView
+import cn.jiguang.imui.chatinput.listener.CameraControllerListener
 import cn.jiguang.imui.chatinput.listener.OnCameraCallbackListener
 import cn.jiguang.imui.chatinput.listener.OnMenuClickListener
 import cn.jiguang.imui.chatinput.listener.RecordVoiceListener
@@ -66,11 +69,13 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         }
     }
 
-    var mBinding: FragmentThemeBinding? = null
+    private var mBinding: FragmentThemeBinding? = null
     private var mViewModel: MessageViewModel? = null
     var mAdapter: MsgListAdapter<MyMessage>? = null
-    var mImm: InputMethodManager? = null
-    var mWindow: Window? = null
+    private var mImm: InputMethodManager? = null
+    private var mWindow: Window? = null
+    var mChatInput: ChatInputView? = null
+    private var mLastId: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater?.inflate(R.layout.fragment_theme, container, false)
@@ -80,7 +85,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         mViewModel = ThemeActivity.obtainViewModel(activity)
         setup()
         mBinding!!.msgList.setOnTouchListener(this)
-        mBinding!!.chatInput.setOnTouchListener(this)
         return mBinding!!.root
     }
 
@@ -88,7 +92,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val ptrLayout = mBinding!!.pullToRefreshLayout
         val header = PtrDefaultHeader(activity)
         val msgList = mBinding!!.msgList
-        val chatInput = mBinding!!.chatInput
+        mChatInput = mBinding!!.chatInput
         val holdersConfig = MsgListAdapter.HoldersConfig()
         // Construct image loader
         val imageLoader = object : ImageLoader {
@@ -124,15 +128,20 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         msg1.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         msg2.setTimeString(SimpleDateFormat("HH:mm", Locale.getDefault()).format(Date()))
         // config style
+        val titleTv = mBinding!!.chatTitleBar?.findViewById<TextView>(R.id.title_tv)
         when (STYLE) {
         // black theme
             ThemeStyle.BLACK -> {
+                mBinding!!.chatTitleBar?.setBackgroundColor(Color.parseColor("#3A4149"))
+                titleTv?.text = resources.getString(R.string.black_theme)
                 configBlackTheme()
                 // custom type
                 msg1.type = BLACK_SEND_TXT
                 msg2.type = BLACK_RECEIVE_TXT
             }
             ThemeStyle.LIGHT -> {
+                mBinding!!.chatTitleBar?.setBackgroundColor(Color.parseColor("#717CFD"))
+                titleTv?.text = resources.getString(R.string.light_theme)
                 configLightTheme()
             }
             else -> {
@@ -171,9 +180,9 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 }
             })
         })
-        chatInput.setMenuClickListener(object : OnMenuClickListener {
+        mChatInput!!.setMenuClickListener(object : OnMenuClickListener {
             override fun switchToMicrophoneMode(): Boolean {
-                setChecked(1)
+                judgeToCheck(1)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -186,7 +195,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun switchToGalleryMode(): Boolean {
-                setChecked(2)
+                judgeToCheck(2)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
@@ -199,7 +208,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun switchToCameraMode(): Boolean {
-                setChecked(3)
+                judgeToCheck(3)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
                         Manifest.permission.RECORD_AUDIO)
@@ -213,7 +222,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun switchToEmojiMode(): Boolean {
-                setChecked(4)
+                judgeToCheck(4)
                 scrollToBottom()
                 return true
             }
@@ -264,12 +273,14 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
         })
 
-        chatInput.setOnClickEditTextListener({
+        mChatInput!!.setOnClickEditTextListener({
+            mLastId = 0
+            setChecked(0)
             Handler().postDelayed({ msgList.smoothScrollToPosition(0) }, 100)
         })
 
         // Record voice callback
-        chatInput.recordVoiceButton.setRecordVoiceListener(object : RecordVoiceListener {
+        mChatInput!!.recordVoiceButton.setRecordVoiceListener(object : RecordVoiceListener {
             override fun onFinishRecord(voiceFile: File, duration: Int) {
                 val message = MyMessage("", IMessage.MessageType.SEND_VOICE.ordinal)
                 if (STYLE == ThemeStyle.BLACK) {
@@ -294,14 +305,14 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                 if (!destDir.exists()) {
                     destDir.mkdirs()
                 }
-                chatInput.recordVoiceButton.setVoiceFilePath(destDir.path, DateFormat.format("yyyy-MM-dd-hhmmss",
+                mChatInput!!.recordVoiceButton.setVoiceFilePath(destDir.path, DateFormat.format("yyyy-MM-dd-hhmmss",
                         Calendar.getInstance(Locale.getDefault())).toString() + "")
             }
 
         })
 
         // Camera callback
-        chatInput.setOnCameraCallbackListener(object : OnCameraCallbackListener {
+        mChatInput!!.setOnCameraCallbackListener(object : OnCameraCallbackListener {
             override fun onFinishVideoRecord(videoPath: String) {
 
             }
@@ -327,9 +338,20 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
 
         })
 
-        chatInput.setOnClickEditTextListener {
-            setChecked(0)
-        }
+        mChatInput!!.setCameraControllerListener(object : CameraControllerListener {
+            override fun onFullScreenClick() {
+            }
+
+            override fun onRecoverScreenClick() {
+            }
+
+            override fun onCloseCameraClick() {
+            }
+
+            override fun onSwitchCameraModeClick() {
+            }
+
+        })
 
         mAdapter!!.setOnMsgClickListener {
             // do something
@@ -365,20 +387,12 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
     override fun onTouch(view: View?, motionEvent: MotionEvent?): Boolean {
         when (motionEvent?.action) {
             MotionEvent.ACTION_DOWN -> {
-                val chatInputView = mBinding!!.chatInput
                 Log.i("ThemeFragment", "on touch event ")
-                if (view?.id == chatInputView.id) {
-                    if (chatInputView.menuState == View.VISIBLE && !chatInputView.softInputState) {
-                        chatInputView.dismissMenuAndResetSoftMode()
-                        return false
-                    } else {
-                        return false
-                    }
-                }
-                if (mBinding!!.chatInput.menuState == View.VISIBLE) {
-                    mBinding!!.chatInput.dismissMenuLayout()
+                if (mChatInput!!.menuState == View.VISIBLE) {
+                    mChatInput!!.dismissMenuLayout()
                 }
                 setChecked(0)
+                mLastId = 0
                 try {
                     val v = activity.currentFocus;
                     if (mImm != null && v != null) {
@@ -450,78 +464,90 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         mAdapter!!.addCustomMsgType(LIGHT_RECEIVE_VOICE, lightReceiveVoiceConfig)
     }
 
+    private fun judgeToCheck(flag: Int) {
+        if (mLastId != flag) {
+            setChecked(flag)
+        } else {
+            if (mChatInput!!.softInputState) {
+                setChecked(flag)
+            } else {
+                setChecked(0)
+            }
+        }
+        mLastId = flag
+    }
+
     private fun setChecked(flag: Int) {
-        val chatInput = mBinding!!.chatInput
         when (flag) {
             1 -> {
                 when (STYLE) {
                     ThemeStyle.BLACK -> {
-                        chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_voice_pres))
+                        mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_voice_pres))
                     }
                     ThemeStyle.LIGHT -> {
-                        chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_voice_pres))
+                        mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_voice_pres))
                     }
                     else -> {
-                        chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_voice_pres))
+                        mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_voice_pres))
                     }
                 }
-                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
-                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
-                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+                mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
             }
             2 -> {
-                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
                 when (STYLE) {
                     ThemeStyle.BLACK -> {
-                        chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_photo_pres))
+                        mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_photo_pres))
                     }
                     ThemeStyle.LIGHT -> {
-                        chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_photo_pres))
+                        mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_photo_pres))
                     }
                     else -> {
-                        chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_photo_pres))
+                        mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_photo_pres))
                     }
                 }
-                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
-                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+                mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
             }
             3 -> {
-                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
-                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
                 when (STYLE) {
                     ThemeStyle.BLACK -> {
-                        chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_camera_pres))
+                        mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_camera_pres))
                     }
                     ThemeStyle.LIGHT -> {
-                        chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_camera_pres))
+                        mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_camera_pres))
                     }
                     else -> {
-                        chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_camera_pres))
+                        mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_camera_pres))
                     }
                 }
-                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+                mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
             }
             4 -> {
-                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
-                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
-                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
                 when (STYLE) {
                     ThemeStyle.BLACK -> {
-                        chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_emoji_pres))
+                        mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.black_menuitem_emoji_pres))
                     }
                     ThemeStyle.LIGHT -> {
-                        chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_emoji_pres))
+                        mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.light_menuitem_emoji_pres))
                     }
                     else -> {
-                        chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_emoji_pres))
+                        mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.default_menuitem_emoji_pres))
                     }
                 }
             }
             else -> {
-                chatInput.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
-                chatInput.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
-                chatInput.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
-                chatInput.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
+                mChatInput!!.voiceBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_mic))
+                mChatInput!!.photoBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_photo))
+                mChatInput!!.cameraBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_camera))
+                mChatInput!!.emojiBtn.setImageDrawable(resources.getDrawable(R.drawable.aurora_menuitem_emoji))
             }
         }
     }

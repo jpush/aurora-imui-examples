@@ -79,18 +79,10 @@ class LightVoiceViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSe
                             mDateTv!!.visibility = View.GONE
                         }
                     }
-
-                    if (lastMsg.user!!.id == myMessage.user!!.id) {
-                        mAvatarIv!!.visibility = View.GONE
-                    } else {
-                        mAvatarIv!!.visibility = View.VISIBLE
-                        mImageLoader.loadAvatarImage(mAvatarIv, message.fromUser.avatarFilePath)
-                    }
                 }
-            } else {
-                mAvatarIv!!.visibility = View.VISIBLE
-                mImageLoader.loadAvatarImage(mAvatarIv, message.fromUser.avatarFilePath)
             }
+            mAvatarIv!!.visibility = View.VISIBLE
+            mImageLoader.loadAvatarImage(mAvatarIv, message.fromUser.avatarFilePath)
         }
         val duration = message.duration
         val lengthStr = duration.toString() + mContext.getString(cn.jiguang.imui.R.string.aurora_symbol_second)
