@@ -144,7 +144,7 @@ class BlackTxtViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSend
             if (style.sendingIndeterminateDrawable != null) {
                 mSendingPb!!.indeterminateDrawable = style.sendingIndeterminateDrawable
             }
-            if (style.showSenderDisplayName == 1) {
+            if (style.showSenderDisplayName) {
                 mDisplayNameTv!!.visibility = View.VISIBLE
             } else {
                 mDisplayNameTv!!.visibility = View.GONE
@@ -157,7 +157,7 @@ class BlackTxtViewHolder<MESSAGE : IMessage>(itemView: View, private var mIsSend
                     style.receiveBubblePaddingTop,
                     style.receiveBubblePaddingRight,
                     style.receiveBubblePaddingBottom)
-            if (style.showReceiverDisplayName == 1) {
+            if (style.showReceiverDisplayName) {
                 mDisplayNameTv!!.visibility = View.VISIBLE
             } else {
                 mDisplayNameTv!!.visibility = View.GONE
