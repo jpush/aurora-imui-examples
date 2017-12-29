@@ -142,13 +142,13 @@ open class BlackImageViewHolder<MESSAGE : IMessage>(itemView: View, private var 
             if (style.sendingIndeterminateDrawable != null) {
                 mSendingPb!!.indeterminateDrawable = style.sendingIndeterminateDrawable
             }
-            if (style.showSenderDisplayName == 1) {
+            if (style.showSenderDisplayName) {
                 mDisplayNameTv!!.visibility = View.VISIBLE
             } else {
                 mDisplayNameTv!!.visibility = View.GONE
             }
         } else {
-            if (style.showReceiverDisplayName == 1) {
+            if (style.showReceiverDisplayName) {
                 mDisplayNameTv!!.visibility = View.VISIBLE
             } else {
                 mDisplayNameTv!!.visibility = View.GONE

@@ -75,7 +75,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
     private var mImm: InputMethodManager? = null
     private var mWindow: Window? = null
     var mChatInput: ChatInputView? = null
-    private var mLastId: Int = 0
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View {
         val root = inflater?.inflate(R.layout.fragment_theme, container, false)
@@ -182,7 +181,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         })
         mChatInput!!.setMenuClickListener(object : OnMenuClickListener {
             override fun switchToMicrophoneMode(): Boolean {
-                judgeToCheck(1)
+                setChecked(1)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.RECORD_AUDIO,
                         Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -195,7 +194,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun switchToGalleryMode(): Boolean {
-                judgeToCheck(2)
+                setChecked(2)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE)
 
@@ -208,7 +207,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun switchToCameraMode(): Boolean {
-                judgeToCheck(3)
+                setChecked(3)
                 scrollToBottom()
                 val params = arrayOf(Manifest.permission.WRITE_EXTERNAL_STORAGE, Manifest.permission.CAMERA,
                         Manifest.permission.RECORD_AUDIO)
@@ -222,7 +221,7 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
             }
 
             override fun switchToEmojiMode(): Boolean {
-                judgeToCheck(4)
+                setChecked(4)
                 scrollToBottom()
                 return true
             }
@@ -274,7 +273,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         })
 
         mChatInput!!.setOnClickEditTextListener({
-            mLastId = 0
             setChecked(0)
             Handler().postDelayed({ msgList.smoothScrollToPosition(0) }, 100)
         })
@@ -392,7 +390,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
                     mChatInput!!.dismissMenuLayout()
                 }
                 setChecked(0)
-                mLastId = 0
                 try {
                     val v = activity.currentFocus;
                     if (mImm != null && v != null) {
@@ -462,19 +459,6 @@ class ThemeFragment : Fragment(), View.OnTouchListener {
         val lightReceiveVoiceConfig = CustomMsgConfig(LIGHT_RECEIVE_VOICE, R.layout.item_msglist_light_receive_voice, false, LightVoiceViewHolder::class.java)
         mAdapter!!.addCustomMsgType(LIGHT_SEND_VOICE, lightSendVoiceConfig)
         mAdapter!!.addCustomMsgType(LIGHT_RECEIVE_VOICE, lightReceiveVoiceConfig)
-    }
-
-    private fun judgeToCheck(flag: Int) {
-        if (mLastId != flag) {
-            setChecked(flag)
-        } else {
-            if (mChatInput!!.softInputState) {
-                setChecked(flag)
-            } else {
-                setChecked(0)
-            }
-        }
-        mLastId = flag
     }
 
     private fun setChecked(flag: Int) {
