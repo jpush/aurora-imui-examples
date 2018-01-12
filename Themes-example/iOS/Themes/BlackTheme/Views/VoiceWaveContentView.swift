@@ -77,20 +77,20 @@ public class VoiceWaveContentView: UIView, IMUIMessageContentViewProtocol {
         IMUIAudioPlayerHelper
           .sharedInstance
           .playAudioWithData((self.message?.msgId)!,voiceData,
-                             progressCallback: { (id, averPower,currendTime, duration) in
+                             { (id, averPower,currendTime, duration) in
                               if self.message?.msgId == id {
                                 let power = pow(10, 0.05 * averPower);
                                 print("averPower:\(averPower)   power:\(power)")
                                 self.updateWave(with: power < 0.1 ? 0.1 : power)
                               }
-                             },
-                             finishCallBack: { id in
+          },
+                             { id in
                               if self.message?.msgId == id {
                                 self.isMediaActivity = false
                                 self.resetVoiceWaveLayer()
                               }
-                             },
-                             stopCallBack: {id in
+          },
+                             {id in
                               if self.message?.msgId == id {
                                 self.isMediaActivity = false
                                 self.resetVoiceWaveLayer()
