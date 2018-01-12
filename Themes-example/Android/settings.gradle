@@ -1,0 +1,4 @@
+include ':app', ':messagelist', ':chatinput'
+
+project(':messagelist').projectDir = new File(rootProject.projectDir, '../../../imui/Android/messagelist')
+project(':chatinput').projectDir = new File(rootProject.projectDir, '../../../imui/Android/chatinput')

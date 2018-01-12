@@ -20,7 +20,7 @@ import cn.jpush.im.api.BasicCallback;
 public class LoginActivity extends Activity implements View.OnClickListener, LoginView.OnSizeChangedListener {
 
     private LoginView mLoginView;
-    private String TARGET_ID = "0002";
+    private String TARGET_ID = "0001";
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {

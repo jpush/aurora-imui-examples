@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="qfx-Zo-j8y">
+    <device id="retina4_7" orientation="portrait">
+        <adaptation id="fullscreen"/>
+    </device>
+    <dependencies>
+        <deployment version="2320" identifier="iOS"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13772"/>
+        <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
+    </dependencies>
+    <scenes>
+        <!--Light Chat View Controller-->
+        <scene sceneID="MLA-9P-Ep9">
+            <objects>
+                <viewController storyboardIdentifier="LightChatViewController" id="qfx-Zo-j8y" customClass="LightChatViewController" customModule="Themes" customModuleProvider="target" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="aWJ-V9-R57">
+                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="ldj-H8-K42" customClass="IMUIMessageCollectionView" customModule="AuroraIMUI">
+                                <rect key="frame" x="0.0" y="0.0" width="375" height="524"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                            <view contentMode="scaleToFill" ambiguous="YES" translatesAutoresizingMaskIntoConstraints="NO" id="pQr-Po-3j6" customClass="IMUIInputView" customModule="AuroraIMUI">
+                                <rect key="frame" x="0.0" y="532" width="375" height="135"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" red="0.81378847359999995" green="0.86015254259999996" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                        <constraints>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="leading" secondItem="WAG-tF-MJ0" secondAttribute="leading" id="Ccc-A2-awD"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="top" secondItem="ldj-H8-K42" secondAttribute="bottom" id="HOQ-2K-nYl"/>
+                            <constraint firstItem="ldj-H8-K42" firstAttribute="trailing" secondItem="WAG-tF-MJ0" secondAttribute="trailing" id="IfQ-kt-sDV"/>
+                            <constraint firstItem="ldj-H8-K42" firstAttribute="leading" secondItem="WAG-tF-MJ0" secondAttribute="leading" id="OCZ-8e-Aka"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="top" secondItem="ldj-H8-K42" secondAttribute="bottom" id="OvK-Ry-FkF"/>
+                            <constraint firstItem="ldj-H8-K42" firstAttribute="top" secondItem="aWJ-V9-R57" secondAttribute="top" id="hOo-jo-gBt"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="bottom" secondItem="WAG-tF-MJ0" secondAttribute="bottom" id="ohX-2f-xRB"/>
+                            <constraint firstItem="pQr-Po-3j6" firstAttribute="trailing" secondItem="WAG-tF-MJ0" secondAttribute="trailing" id="tFK-lZ-Hjf"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="WAG-tF-MJ0"/>
+                    </view>
+                    <connections>
+                        <outlet property="chatInputView" destination="pQr-Po-3j6" id="fI0-9D-Gcw"/>
+                        <outlet property="messageList" destination="ldj-H8-K42" id="0hA-v4-eK0"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Wg5-Ug-GYe" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="85.599999999999994" y="161.46926536731635"/>
+        </scene>
+    </scenes>
+</document>
