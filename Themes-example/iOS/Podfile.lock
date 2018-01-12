@@ -1,11 +1,11 @@
 PODS:
-  - AuroraIMUI (0.6.2)
+  - AuroraIMUI (0.6.7)
 
 DEPENDENCIES:
   - AuroraIMUI (~> 0.6.2)
 
 SPEC CHECKSUMS:
-  AuroraIMUI: 0b2fdc9e13b8b5c83ce05446288de9f5dab0a3c6
+  AuroraIMUI: 8e3c55295bd2484259743c1bb7955d2ee86fac7e
 
 PODFILE CHECKSUM: 1efa783eab6b9323e206df9cd0f9df631eac0171
 

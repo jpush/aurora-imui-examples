@@ -185,6 +185,7 @@
         break;
     }
   }
+  _messageStatus = IMUIMessageStatusMediaDownloadFail;
   return self;
 }
 

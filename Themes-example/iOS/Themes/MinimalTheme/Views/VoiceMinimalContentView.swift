@@ -67,18 +67,18 @@ public class VoiceMinimalContentView: UIView, IMUIMessageContentViewProtocol {
         IMUIAudioPlayerHelper
           .sharedInstance
           .playAudioWithData((self.message?.msgId)!,voiceData,
-                             progressCallback: { (id, power, currendTime, duration) in
+                             { (id, power, currendTime, duration) in
                               if self.message?.msgId == id {
                                 self.setImage(with: Int(currendTime*4)%3 + 1)
                               }
           },
-                             finishCallBack: { id in
+                             { id in
                               if self.message?.msgId == id {
                                 self.isMediaActivity = false
                                 self.resetVoiceImage()
                               }
           },
-                             stopCallBack: {id in
+                             {id in
                               if self.message?.msgId == id {
                                 self.isMediaActivity = false
                                 self.resetVoiceImage()
