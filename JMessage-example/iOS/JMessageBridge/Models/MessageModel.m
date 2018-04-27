@@ -156,6 +156,20 @@
                                                        contentType: @"Video"];
       }
       default:
+        _type = @"Text";
+        UIEdgeInsets contentInset = UIEdgeInsetsZero;
+        _messageText = @"[无法解析的消息]";
+        
+        if (_isOutGoing) {
+          contentInset = UIEdgeInsetsMake(10, 10, 10, 10);
+        } else {
+          contentInset = UIEdgeInsetsMake(10, 15, 10, 10);
+        }
+        _layout = [[MessageLayout alloc] initWithIsOutGoingMessage:_isOutGoing
+                                                    isNeedShowTime:false
+                                                 bubbleContentSize:[MessageModel calculateTextContentSizeWithText: _messageText]
+                                               bubbleContentInsets:contentInset
+                                                       contentType: @"Text"];
         break;
     }
     
