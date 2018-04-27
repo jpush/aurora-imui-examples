@@ -29,6 +29,8 @@
   _imuiInputView.inputViewDelegate = self;
   NSArray *messageArray = [_conversation messageArrayFromNewestWithOffset:@(0) limit:@(20)];
   NSMutableArray *messageModelArray = @[].mutableCopy;
+  
+  // you can insert your history message
   for (JMSGMessage *message in messageArray) {
     MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
     [messageModelArray addObject:messageModel];
@@ -206,10 +208,10 @@
 
 - (void)onReceiveMessage:(JMSGMessage *)message
                    error:(NSError *)error {
-  if (error == nil) {
-    MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
-    [_messageList appendMessageWith:messageModel];
-  }
+//  if (error == nil) {
+//    MessageModel *messageModel = [[MessageModel alloc] initWithMessage:message];
+//    [_messageList appendMessageWith:messageModel];
+//  }
 }
 
 - (void)onReceiveMessageDownloadFailed:(JMSGMessage *)message {
