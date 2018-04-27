@@ -91,7 +91,7 @@
       }
       
       ConversationViewController *conversationVC = [[ConversationViewController alloc] init];
-      conversationVC.conversation = conversation;
+      conversationVC.conversation = resultObject;
       [self presentViewController:conversationVC animated:true completion:^{}];
     }];
   } else {
